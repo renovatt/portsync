@@ -6,6 +6,60 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  --border-primary: #101010;
+  --text-primary:#f9004d;
+  --background-primary: #101010;
+  --background-secondary: #191919;
+  --background-shadow:#00000041;
+  --background-modal-shadow:#000000CC; 
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar{
+  width: 3px;
+}
+
+::-webkit-scrollbar-track{
+  background-color: var(--background-primary);
+}
+
+::-webkit-scrollbar-thumb{
+  background: var(--text-primary);
+  border-radius: 50%;
+}
+
+h1, h2, h3, h4, p{
+  margin: 0;
+  padding: 0;
+}
+
+ul, li{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+html{
+  @media(max-width:1080px){
+      font-size:93.75%;
+  }
+
+  @media(max-width:720px){
+      font-size:87.5%;
+  }
+
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +71,7 @@
 }
 
 body {
+/*
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -24,4 +79,5 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+*/
 }
