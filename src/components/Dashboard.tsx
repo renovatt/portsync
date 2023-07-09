@@ -167,40 +167,8 @@ const Dashboard = () => {
                 />
             )}
 
-            {aside && (
-                <section
-                    className='flex items-center justify-center fixed top-16 right-0 bg-transparent overflow-y-auto animate-fade'>
-                    <section
-                        className='relative flex items-center justify-between h-auto max-w-6xl rounded-lg flex-col bg-transparent p-4'
-                    >
-                        <aside className='flex flex-col'>
-                            <Button
-                                title='Projeto'
-                                width='w-60'
-                                svg={<BiAddToQueue />}
-                                onClick={handleCreateProject}
-                            />
-
-                            <Button
-                                title='Habilidade'
-                                width='w-60'
-                                svg={<BiAddToQueue />}
-                                onClick={handleCreateSkill}
-                            />
-
-                            <Button
-                                title='Competência'
-                                width='w-60'
-                                svg={<BiAddToQueue />}
-                                onClick={handleCreateSoftskill}
-                            />
-                        </aside>
-                    </section>
-                </section>
-            )}
-
             <section
-                className='flex flex-col justify-between items-center w-screen h-screen p-2 bg-backgroundPrimary'
+                className='flex flex-col justify-between items-center w-screen h-screen max-w-[1400px] max-h-[1400px] p-2 bg-backgroundPrimary'
                 onClick={handleHideAside}
             >
                 <header className='flex justify-between items-center w-full p-2 h-20'>
@@ -210,7 +178,7 @@ const Dashboard = () => {
                     >
                         Port<span className='text-textPrimary'>Sync</span></Link>
 
-                    <nav className='flex justify-center item-center'>
+                    <nav className='flex justify-center item-center relative'>
                         {profile && profile.map(profile => (
                             <Button
                                 key={profile.id}
@@ -228,6 +196,37 @@ const Dashboard = () => {
                             onMouseOver={handleShowAside}
                         />
 
+                        {aside && (
+                            <section
+                                className='flex items-center justify-center absolute top-12 -right-4 bg-transparent overflow-y-auto animate-fade'>
+                                <section
+                                    className='relative flex items-center justify-between h-auto max-w-6xl rounded-lg flex-col bg-transparent p-4'
+                                >
+                                    <aside className='flex flex-col'>
+                                        <Button
+                                            title='Projeto'
+                                            width='w-60'
+                                            svg={<BiAddToQueue />}
+                                            onClick={handleCreateProject}
+                                        />
+
+                                        <Button
+                                            title='Habilidade'
+                                            width='w-60'
+                                            svg={<BiAddToQueue />}
+                                            onClick={handleCreateSkill}
+                                        />
+
+                                        <Button
+                                            title='Competência'
+                                            width='w-60'
+                                            svg={<BiAddToQueue />}
+                                            onClick={handleCreateSoftskill}
+                                        />
+                                    </aside>
+                                </section>
+                            </section>
+                        )}
                     </nav>
                 </header>
 
