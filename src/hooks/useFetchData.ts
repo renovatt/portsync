@@ -6,15 +6,19 @@ import {
     getSoftskills
 } from '@/services';
 import {
-    ProfileProps,
-    ProjectsTypeProps,
-    SkillsTypeProps,
-    SoftskillsTypeProps
+    ProfileSchema,
+    ProjectSchema,
+    SkillSchema,
+    SoftskillSchema
 } from '@/@types';
 
-const thumbnail = 'https://raw.githubusercontent.com/renovatt/portfolio/main/public/thumbnails/tree.png'
+export const profileInitialValue: ProfileSchema = {
+    id: '',
+    description_1: '',
+    description_2: ''
+}
 
-export const initialValue: ProjectsTypeProps = {
+export const projectInitialValue: ProjectSchema = {
     id: '',
     order: 0,
     project_name: '',
@@ -34,13 +38,25 @@ export const initialValue: ProjectsTypeProps = {
     }
 }
 
+export const skillInitialValue: SkillSchema = {
+    id: '',
+    skill_name: '',
+    svg_link: '',
+    description: '',
+}
+
+export const softskillInitialValue: SoftskillSchema = {
+    id: '',
+    softskill_name: ''
+}
+
 const useFetchData = () => {
     const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    const [profile, setProfile] = React.useState<ProfileProps[]>()
-    const [projects, setProjects] = React.useState<ProjectsTypeProps[]>([])
-    const [skillsResponse, setSkillsResponse] = React.useState<SkillsTypeProps[]>([]);
-    const [softSkillsResponse, setSoftSkillsResponse] = React.useState<SoftskillsTypeProps[]>([]);
+    const [profile, setProfile] = React.useState<ProfileSchema[]>()
+    const [projects, setProjects] = React.useState<ProjectSchema[]>([])
+    const [skills, setSkills] = React.useState<SkillSchema[]>([]);
+    const [softskills, setSoftSkills] = React.useState<SoftskillSchema[]>([]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -52,13 +68,13 @@ const useFetchData = () => {
                 .all([getSkills(), getSoftskills()])
 
             if ('skills' in skills) {
-                setSkillsResponse(skills.skills)
+                setSkills(skills.skills)
             } else if ('error' in skills) {
                 setError(true)
             }
 
             if ('softskills' in softskills) {
-                setSoftSkillsResponse(softskills.softskills)
+                setSoftSkills(softskills.softskills)
             } else if ('error' in softskills) {
                 setError(true)
             }
@@ -91,8 +107,8 @@ const useFetchData = () => {
         loading,
         profile,
         projects,
-        skillsResponse,
-        softSkillsResponse,
+        skills,
+        softskills,
     };
 };
 

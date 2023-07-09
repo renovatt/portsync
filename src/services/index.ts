@@ -1,8 +1,11 @@
 import {
+    APIProfileIdResponse,
     APIProfileResponse,
     APIProjectResponse,
     APIProjectsResponse,
+    APISkillResponse,
     APISkillsResponse,
+    APISoftskillResponse,
     APISoftskillsResponse,
 } from "@/@types";
 
@@ -83,7 +86,7 @@ export const getProfile = async (): Promise<APIProfileResponse> => {
     }
 }
 
-export const getSkillById = async (id: string): Promise<any> => {
+export const getSkillById = async (id: string): Promise<APISkillResponse> => {
     try {
         const response = await fetch(`${BASE_URL}/skills/${id}`);
         const data = await response.json();
@@ -98,7 +101,7 @@ export const getSkillById = async (id: string): Promise<any> => {
     }
 }
 
-export const getSoftskillById = async (id: string): Promise<any> => {
+export const getSoftskillById = async (id: string): Promise<APISoftskillResponse> => {
     try {
         const response = await fetch(`${BASE_URL}/softskills/${id}`);
         const data = await response.json();
@@ -113,7 +116,7 @@ export const getSoftskillById = async (id: string): Promise<any> => {
     }
 }
 
-export const getProfileById = async (id: string): Promise<any> => {
+export const getProfileById = async (id: string): Promise<APIProfileIdResponse> => {
     try {
         const response = await fetch(`${BASE_URL}/profile/${id}`);
         const data = await response.json();
