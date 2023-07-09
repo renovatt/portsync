@@ -1,26 +1,25 @@
-import { useState } from 'react';
+import { ModalTypeProps, SoftskillSchema } from '@/@types';
+import { RiCloseCircleLine } from 'react-icons/ri'
 import Input from '../Input';
-import TextArea from '../TextArea';
-import Button from '../Button';
 import { Field } from '../Field';
 import { BsSend } from 'react-icons/bs';
-import { RiCloseCircleLine } from 'react-icons/ri'
-import { ModalTypeProps, SkillSchema } from '@/@types';
-import { skillSchema } from '@/zod';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
+import { softskillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
+import Button from '../Button';
 
-const CreateSKillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
+const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
     const [loading, setLoading] = useState(false)
 
-    const methods = useForm<SkillSchema>({
+    const methods = useForm<SoftskillSchema>({
         mode: 'all',
         reValidateMode: 'onChange',
-        resolver: zodResolver(skillSchema)
+        resolver: zodResolver(softskillSchema)
     });
 
-    const onSubmit = async (data: SkillSchema) => {
+    const onSubmit = async (data: SoftskillSchema) => {
         setLoading(true);
         try {
             console.log(data)
@@ -63,29 +62,12 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
                         <section className='flex'>
                             <Field>
                                 <Input
-                                    name='skill_name'
-                                    label='Nome da habilidade'
-                                    placeholder='Typescript'
+                                    name='softskill_name'
+                                    label='Nome da competência'
+                                    placeholder='Resiliência'
                                 />
-                                <ErrorMessage field='skill_name' />
+                                <ErrorMessage field='softskill_name' />
                             </Field>
-
-                            <Field>
-                                <Input
-                                    name='svg_link'
-                                    label='Imagem'
-                                    placeholder='https://url.com'
-                                />
-                                <ErrorMessage field='svg_link' />
-                            </Field>
-                        </section>
-
-                        <section className='mt-2 mb-4 flex flex-col justify-start items-start'>
-                            <TextArea label='Descrição'
-                                name='description'
-                                placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
-                            />
-                            <ErrorMessage field='description' />
                         </section>
 
                         <Button
@@ -101,4 +83,4 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
     )
 }
 
-export default CreateSKillModal;
+export default CreateSoftskillModal;

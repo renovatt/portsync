@@ -1,12 +1,39 @@
-import { ModalTypeProps } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
+import { useState } from 'react';
+import { projectSchema } from '@/zod';
+import { ModalTypeProps, ProjectSchema } from '@/@types';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod'
 import { BsSend } from 'react-icons/bs';
+import { RiCloseCircleLine } from 'react-icons/ri'
 import { Field } from '../Field';
+import { ErrorMessage } from '../ErrorMessage';
 import Input from '../Input';
 import Button from '../Button';
+import InputNumber from '../InputNumber';
 import TextArea from '../TextArea';
+import TechList from '../TechList';
 
-const CreateProjectModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
+const CreateProjectModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
+    const [loading, setLoading] = useState(false)
+
+    const methods = useForm<ProjectSchema>({
+        mode: 'all',
+        reValidateMode: 'onChange',
+        resolver: zodResolver(projectSchema)
+    });
+
+    const onSubmit = async (data: ProjectSchema) => {
+        setLoading(true);
+        try {
+            console.log(data)
+            console.log('Salvo com sucesso.')
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleCloseModal = (
         event: React.MouseEvent<HTMLElement> |
             React.TouchEvent<HTMLElement>
@@ -17,85 +44,98 @@ const CreateProjectModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => 
     }
 
     return (
-        <section
-            onClick={(event) => handleCloseModal(event)}
-            className='flex items-center justify-center fixed top-0 left-0 z-[50] w-screen h-screen  bg-backgroundShadow backdrop-blur-sm overflow-y-auto animate-fade'
-        >
-
+        <FormProvider {...methods}>
             <section
-                className='relative flex items-start justify-between h-auto md:max-h-[800px] max-h-[initial] md:h-[85vh] w-[80%] max-w-6xl rounded-lg p-4 flex-col md:flex-row bg-backgroundPrimary md:mt-0 mt-[20rem] md:mb-0 mb-10 overflow-y-auto'
+                onClick={(event) => handleCloseModal(event)}
+                className='flex items-center justify-center fixed top-0 left-0 z-[50] w-screen h-screen  bg-backgroundShadow backdrop-blur-sm overflow-y-auto animate-fade'
             >
-                <RiCloseCircleLine
-                    className='text-white absolute top-4 right-4 w-6 h-6 cursor-pointer hover:text-textPrimary transition-all'
-                    onClick={closeModal}
-                />
 
-                <form className='w-full m-4'>
-                    <section className='flex'>
-                        <Field>
-                            <Input
-                                label='Nome do projeto'
-                                placeholder='CutePet'
-                            />
-                        </Field>
-
-                        <Field>
-                            <Input
-                                label='Posição n°'
-                                placeholder='2'
-                                width='w-20'
-                            />
-                        </Field>
-                    </section>
-
-
-                    <section className='flex'>
-                        <Field>
-                            <Input
-                                label='Banner'
-                                placeholder='https://url.com'
-                            />
-                        </Field>
-
-                        <Field>
-                            <Input
-                                label='Thumbnail'
-                                placeholder='https://url.com'
-                            />
-                        </Field>
-
-                        <Field>
-                            <Input
-                                label='Deploy'
-                                placeholder='https://url.com'
-                            />
-                        </Field>
-                    </section>
-
-                    <section className='flex flex-col justify-center items-start'>
-                        <h1 className='text-zinc-600 text-sm font-bold'>Tecnologia</h1>
-                        <button type='button' className='mt-1 ml-2 text-textPrimary text-xs flex items-center gap-1'>Adicionar</button>
-                    </section>
-
-                    <section className='mt-20'>
-                        <TextArea label='Descrição'
-                            name='description'
-                            placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit quas accusantium et inventore tenetur quo officia, iusto nobis id quae, esse asperiores porro, animi dolorem ab? Obcaecati eos suscipit minus!'
-                            width=''
-                        />
-                    </section>
-                </form>
-
-                <aside className='flex justify-end items-center w-full '>
-                    <Button
-                        title='Enviar'
-                        width='w-40'
-                        svg={<BsSend className='text-white w-6 h-6' />}
+                <section
+                    className='relative flex items-start justify-between h-auto md:max-h-[800px] max-h-[initial] md:h-[85vh] w-[80%] max-w-6xl rounded-lg p-4 flex-col bg-backgroundPrimary md:mt-0 mt-[20rem] md:mb-0 mb-10 overflow-y-auto overflow-x-hidden'
+                >
+                    <RiCloseCircleLine
+                        className='text-white absolute top-4 right-4 w-6 h-6 cursor-pointer hover:text-textPrimary transition-all'
+                        onClick={closeModal}
                     />
-                </aside>
+
+                    <form
+                        className='w-full m-4'
+                        onSubmit={methods.handleSubmit(onSubmit)}
+                    >
+                        <section className='flex'>
+                            <Field>
+                                <Input
+                                    name='project_name'
+                                    label='Nome do projeto'
+                                    placeholder='CutePet'
+                                />
+                                <ErrorMessage field='project_name' />
+                            </Field>
+
+                            <Field>
+                                <InputNumber
+                                    name='order'
+                                    label='Posição n°'
+                                    placeholder='2'
+                                    width='w-20'
+                                />
+                                <ErrorMessage field='order' />
+                            </Field>
+                        </section>
+
+                        <section className='flex'>
+                            <Field>
+                                <Input
+                                    name='banner_url'
+                                    label='Banner'
+                                    placeholder='https://url.com'
+                                />
+                                <ErrorMessage field='banner_url' />
+                            </Field>
+
+                            <Field>
+                                <Input
+                                    name='thumbnail_url'
+                                    label='Thumbnail'
+                                    placeholder='https://url.com'
+                                />
+                                <ErrorMessage field='thumbnail_url' />
+                            </Field>
+
+                            <Field>
+                                <Input
+                                    name='deploy_url'
+                                    label='Deploy'
+                                    placeholder='https://url.com'
+                                />
+                                <ErrorMessage field='deploy_url' />
+                            </Field>
+                        </section>
+
+                        <Field>
+                            <TechList />
+                            <ErrorMessage field='techs.links' />
+                        </Field>
+
+                        <section className='mt-2 mb-4 flex flex-col justify-start items-start'>
+                            <TextArea label='Descrição'
+                                name='description'
+                                placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
+                            />
+                            <ErrorMessage field='description' />
+                        </section>
+
+                        <Button
+                            type='submit'
+                            title='Enviar'
+                            width='w-40'
+                            svg={<BsSend className='text-white w-6 h-6' />}
+                        />
+                    </form>
+                </section>
             </section>
-        </section>
+        </FormProvider>
     )
 }
 
-export default CreateProjectModal
+export default CreateProjectModal;
