@@ -1,83 +1,91 @@
-// import { z } from "zod";
-// import { contactSchema } from "@/zod";
+import { z } from "zod";
+import { ReactElement } from "react";
+import {
+    profileSchema,
+    projectSchema,
+    skillSchema,
+    softskillSchema
+} from "@/zod";
 
 type SkillsResponse = {
-    skills: SkillsTypeProps[];
+    skills: SkillSchema[];
 }
 
 type SoftskillsResponse = {
-    softskills: SoftskillsTypeProps[];
+    softskills: SoftskillSchema[];
 }
 
 type ProjectsResponse = {
-    projects: ProjectsTypeProps[];
-}
-
-type ProjectResponse = {
-    project: ProjectsTypeProps;
+    projects: ProjectSchema[];
 }
 
 type ProfileResponse = {
-    profile: ProfileProps[];
+    profile: ProfileSchema[];
+}
+
+type ProjectResponse = {
+    project: ProjectSchema;
+}
+
+type SkillResponse = {
+    skill: SkillSchema;
+}
+
+type SoftskillResponse = {
+    softskill: SoftskillSchema;
+}
+
+type ProfileIdResponse = {
+    profile: ProfileSchema;
 }
 
 type ErrorResponseProps = {
     error: string;
 }
 
-type TechsTypeProps = {
-    id: string;
-    svg_name: string;
-    link: string;
-    svg_link: string;
-}
+export type ProfileSchema = z.infer<typeof profileSchema>
+export type ProjectSchema = z.infer<typeof projectSchema>
+export type SkillSchema = z.infer<typeof skillSchema>
+export type SoftskillSchema = z.infer<typeof softskillSchema>
 
-type LinksTypeProps = {
-    links: TechsTypeProps[]
-}
-
-// export type ContactProps = z.infer<typeof contactSchema>
 export type APISkillsResponse = SkillsResponse | ErrorResponseProps;
 export type APISoftskillsResponse = SoftskillsResponse | ErrorResponseProps;
 export type APIProjectsResponse = ProjectsResponse | ErrorResponseProps;
 export type APIProjectResponse = ProjectResponse | ErrorResponseProps;
 export type APIProfileResponse = ProfileResponse | ErrorResponseProps;
-
-export type ProjectsTypeProps = {
-    id: string;
-    order: number;
-    project_name: string;
-    deploy_url: string;
-    banner_url: string;
-    thumbnail_url: string;
-    description: string;
-    techs: LinksTypeProps;
-}
-
-export type SkillsTypeProps = {
-    id: string;
-    skill_name: string;
-    svg_link: string;
-    description: string;
-}
-
-export type SoftskillsTypeProps = {
-    id: string;
-    softskill_name: string;
-}
-
-export type ProfileProps = {
-    id: string;
-    description_1: string;
-    description_2: string;
-}
+export type APISkillResponse = SkillResponse | ErrorResponseProps;
+export type APISoftskillResponse = SoftskillResponse | ErrorResponseProps;
+export type APIProfileIdResponse = ProfileIdResponse | ErrorResponseProps;
 
 export type ContainerTypeProps = {
     children: React.ReactNode;
 }
 
 export type ModalTypeProps = {
-    id: string;
+    id?: string;
     closeModal: () => void;
     toggleModal: () => void;
 }
+
+export type ButtonProps = {
+    title: string;
+    svg: ReactElement;
+    width?: string;
+    onClick?: () => void;
+    onMouseOver?: () => void;
+    type?: 'button' | 'submit' | 'reset' | undefined;
+}
+
+export type InputProps = {
+    name: string;
+    label: string;
+    width?: string;
+    placeholder: string;
+};
+
+export type ListProps = {
+    title: string;
+}
+
+export type CreateModalType = 'newProject' | 'newSkill' | 'newSoftskill';
+export type UpdateModalType = 'profile' | 'project' | 'skill' | 'softskill';
