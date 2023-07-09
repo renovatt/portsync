@@ -34,10 +34,21 @@ module.exports = {
             opacity: '1',
             transform: 'translateX(0px)'
           }
+        },
+        load: {
+          '50%': {
+            width: '100%'
+          },
+          '100%': {
+            width: '0',
+            right: '0',
+            left: 'unset'
+          }
         }
       },
       animation: {
-        fade: 'fade .7s forwards',
+        fade: 'fade .3s forwards',
+        load: 'load .5s ease-in-out infinite',
       }
     },
   },

@@ -34,6 +34,16 @@
   border-radius: 50%;
 }
 
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 h1, h2, h3, h4, p{
   margin: 0;
   padding: 0;
