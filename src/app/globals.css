@@ -90,4 +90,6 @@ body {
     )
     rgb(var(--background-start-rgb));
 */
+
+background: var(--background-primary);
 }
