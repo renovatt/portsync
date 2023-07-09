@@ -1,4 +1,6 @@
+
 import './globals.css'
+import { Container } from '@/components/Container'
 import { Jua } from 'next/font/google'
 
 const jua = Jua({
@@ -18,7 +20,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={jua.className}>{children}</body>
+      <body className={jua.className}>
+        <Container>
+          {children}
+        </Container>
+      </body>
     </html>
   )
 }
