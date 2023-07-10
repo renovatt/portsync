@@ -1,11 +1,13 @@
 
 import './globals.css'
 import { Container } from '@/components/Container'
-import { Jua } from 'next/font/google'
+import { Footer } from '@/components/Footer'
+import { Chakra_Petch } from 'next/font/google'
 
-const jua = Jua({
+const chakra_Petch = Chakra_Petch({
   subsets: ['latin'],
-  weight: '400'
+  weight: ['300', '500', '700'],
+  display: 'swap'
 })
 
 export const metadata = {
@@ -20,10 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={jua.className}>
+      <body className={chakra_Petch.className}>
         <Container>
           {children}
         </Container>
+        {/* <Footer /> */}
       </body>
     </html>
   )
