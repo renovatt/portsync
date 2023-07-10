@@ -9,8 +9,9 @@ const Button = ({ ...props }: ButtonProps) => {
         >
             <button
                 type={props.type}
-                className='flex justify-between items-center w-full text-white bold'>
-                {props.title}<svg className='w-6 h-6 mt-2 scale-125'>{props.svg}</svg>
+                className={`flex justify-between items-center w-full text-white bold`}>
+                <p className={`${props.textHidden ? props.textHidden : 'flex'}`}>{props.title}</p>
+                <svg className='w-6 h-6 mt-2 pl-1 scale-125'>{props.svg}</svg>
             </button>
         </section>
     )

@@ -31,7 +31,7 @@ const TechList = () => {
                 const link = `techs.links.${index}.link`
 
                 return (
-                    <section key={field.id} className='flex justify-center items-center gap-1'>
+                    <section key={field.id} className='relative md:sticky flex md:flex-row flex-col w-full justify-center md:items-center gap-2 border border-zinc-600 rounded-md md:border-none md:p-0 md:m-0 p-2 my-1'>
                         <Field>
                             <Input
                                 name={svg_name}
@@ -61,7 +61,7 @@ const TechList = () => {
 
                         <MdOutlineDeleteOutline
                             onClick={() => remove(index)}
-                            className='text-white w-6 h-6 cursor-pointer'
+                            className='text-white w-6 h-6 cursor-pointer md:sticky absolute top-4 right-2'
                         />
                     </section>
                 )

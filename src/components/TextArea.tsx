@@ -8,17 +8,18 @@ type InputProps = {
     placeholder: string;
     width?: string;
     rows?: number;
+    col?: number;
 }
 
 const TextArea = forwardRef<HTMLInputElement, InputProps>(
-    ({ name, label, placeholder, rows, width, ...props }, _ref) => {
+    ({ name, label, placeholder, rows, col, width, ...props }, _ref) => {
         const { register } = useFormContext()
 
         return (
             <>
                 <Label htmlFor={name}>{label}</Label>
                 <textarea
-                    className={`rounded-lg p-3 shadow-sm focus:outline-none bg-backgroundSecondary text-zinc-300 text-sm m-1 ${width ? width : 'w-auto'} max-h-40 mb-2 mx-2 placeholder:text-sm`}
+                    className={`rounded-lg p-3 shadow-sm focus:outline-none bg-backgroundSecondary text-zinc-300 text-sm m-1 ${width ? width : 'w-full'}  md:max-h-40 mb-2 mx-2 placeholder:text-sm `}
                     placeholder={placeholder}
                     cols={50}
                     rows={rows ? rows : 4}
