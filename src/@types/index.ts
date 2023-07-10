@@ -71,6 +71,7 @@ export type ButtonProps = {
     title: string;
     svg: ReactElement;
     width?: string;
+    textHidden?: string;
     onClick?: () => void;
     onMouseOver?: () => void;
     type?: 'button' | 'submit' | 'reset' | undefined;
