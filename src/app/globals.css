@@ -22,7 +22,7 @@
 }
 
 ::-webkit-scrollbar{
-  width: 3px;
+  width: 1px;
 }
 
 ::-webkit-scrollbar-track{
@@ -31,7 +31,7 @@
 
 ::-webkit-scrollbar-thumb{
   background: var(--text-primary);
-  border-radius: 50%;
+ 
 }
 
 input[type='number']::-webkit-inner-spin-button {
@@ -68,6 +68,7 @@ html{
       font-size:87.5%;
   }
 
+  overflow-x: hidden;
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 }
