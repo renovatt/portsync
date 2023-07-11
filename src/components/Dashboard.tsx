@@ -7,7 +7,6 @@ import { FiEdit } from 'react-icons/fi'
 import { HiOutlineFolderAdd } from 'react-icons/hi'
 import { LuFolderClosed } from 'react-icons/lu'
 import { BiAddToQueue } from 'react-icons/bi'
-import { Loader } from './Helper/Loader'
 import useFetchData from '@/hooks/useFetchData'
 import UpdateProjectModal from './Modals/UpdateProjectModal'
 import UpdateSkillModal from './Modals/UpdateSkillModal'
@@ -72,6 +71,9 @@ const Dashboard = () => {
         setProjectId('');
         setSoftskillId('');
         handleHideAside();
+        setNewProject(false)
+        setNewSkill(false)
+        setNewSoftskill(false)
 
         const stateMap: Record<UpdateModalType,
             React.Dispatch<React.SetStateAction<string>>> = {
@@ -168,7 +170,7 @@ const Dashboard = () => {
             )}
 
             <section
-                className='flex flex-col justify-between items-start min-h-screen h-full w-screen max-w-[1200px] lg:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
+                className='flex flex-col justify-between items-start min-h-screen h-auto w-screen max-w-[1200px] lg:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
             >
                 <header className='flex justify-between items-center w-full p-0 md:p-2 h-20'>
                     <Link
@@ -230,7 +232,7 @@ const Dashboard = () => {
                     </nav>
                 </header>
 
-                <article className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full pt-48'>
+                <article className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full ${aside ? 'mt-48' : 'm-0'} transition-all`}>
                     <section className='flex justify-start items-center flex-col w-full max-h-80 m-4 overflow-y-scroll overflow-x-hidden relative'>
                         {projects && projects
                             .sort((a, b) => a.order - b.order)
