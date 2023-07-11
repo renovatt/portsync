@@ -37,8 +37,6 @@ const Dashboard = () => {
         toggleModal } = useToggle();
 
     const {
-        loading,
-        error,
         profile,
         projects,
         skills,
@@ -111,9 +109,6 @@ const Dashboard = () => {
 
     return (
         <>
-            {loading && <Loader />}
-            {error && <p>Deu erro</p>}
-
             {modal && isNewProject && (
                 <CreateProjectModal
                     closeModal={closeModal}
@@ -168,10 +163,10 @@ const Dashboard = () => {
             )}
 
             <section
-                className='flex flex-col justify-between items-center w-screen h-screen max-w-[1400px] max-h-[1400px] p-2 bg-backgroundPrimary'
+                className='flex flex-col justify-between items-center h-screen w-screen max-w-[1200px] md:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
                 onClick={handleHideAside}
             >
-                <header className='flex justify-between items-center w-full p-2 h-20'>
+                <header className='flex justify-between items-center w-full p-0 md:p-2 h-20'>
                     <Link
                         href='/'
                         className='text-white text-2xl font-bold'
@@ -183,7 +178,7 @@ const Dashboard = () => {
                             <Button
                                 key={profile.id}
                                 title='Perfil'
-                                width='w-60'
+                                width='w-40 md:w-60'
                                 svg={<FiEdit />}
                                 onClick={() => handleOpenModal(profile.id!, 'profile')}
                             />
@@ -191,35 +186,36 @@ const Dashboard = () => {
 
                         <Button
                             title='Adicionar'
-                            width='w-60'
+                            width='w-14 md:w-60'
+                            textHidden='hidden md:flex'
                             svg={<HiOutlineFolderAdd />}
                             onMouseOver={handleShowAside}
                         />
 
                         {aside && (
                             <section
-                                className='flex items-center justify-center absolute top-12 -right-4 bg-transparent overflow-y-auto animate-fade'>
+                                className='flex items-center justify-center absolute top-12 right-0 bg-transparent overflow-y-auto animate-fade'>
                                 <section
-                                    className='relative flex items-center justify-between h-auto max-w-6xl rounded-lg flex-col bg-transparent p-4'
+                                    className='relative flex items-center justify-between max-w-6xl rounded-lg flex-col bg-transparent py-4'
                                 >
                                     <aside className='flex flex-col'>
                                         <Button
                                             title='Projeto'
-                                            width='w-60'
+                                            width='w-44 md:w-60'
                                             svg={<BiAddToQueue />}
                                             onClick={handleCreateProject}
                                         />
 
                                         <Button
                                             title='Habilidade'
-                                            width='w-60'
+                                            width='w-44 md:w-60'
                                             svg={<BiAddToQueue />}
                                             onClick={handleCreateSkill}
                                         />
 
                                         <Button
                                             title='Competência'
-                                            width='w-60'
+                                            width='w-44 md:w-60'
                                             svg={<BiAddToQueue />}
                                             onClick={handleCreateSoftskill}
                                         />
@@ -230,7 +226,7 @@ const Dashboard = () => {
                     </nav>
                 </header>
 
-                <article className='flex justify-center items-center w-full'>
+                <article className='flex flex-col md:flex-row justify-center items-center w-full md:p-0 pt-48'>
                     <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
                         {projects && projects
                             .sort((a, b) => a.order - b.order)
@@ -244,7 +240,7 @@ const Dashboard = () => {
                             ))}
                     </section>
 
-                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll'>
+                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
                         {skills && skills.map(skill => (
                             <Button
                                 key={skill.id}
@@ -255,7 +251,7 @@ const Dashboard = () => {
                         ))}
                     </section>
 
-                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll'>
+                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
                         {softskills && softskills.map(softskill => (
                             <Button
                                 key={softskill.id}
