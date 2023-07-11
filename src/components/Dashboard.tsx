@@ -163,7 +163,7 @@ const Dashboard = () => {
             )}
 
             <section
-                className='flex flex-col justify-between items-center h-screen w-screen max-w-[1200px] md:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
+                className='flex flex-col justify-between items-start min-h-screen h-full w-screen max-w-[1200px] md:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
                 onClick={handleHideAside}
             >
                 <header className='flex justify-between items-center w-full p-0 md:p-2 h-20'>
