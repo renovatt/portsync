@@ -16,6 +16,7 @@ import InputNumber from '../InputNumber';
 import TechList from '../TechList';
 import { ErrorMessage } from '../ErrorMessage';
 import { Loader } from '../Helper/Loader';
+import { toast } from 'react-toastify';
 
 const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
     const [error, setError] = useState(false)
@@ -33,16 +34,21 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => 
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }
     };
 
     const deleteProject = async () => {
-        console.log('deletado')
+        toast.success('Projeto deletado com sucesso!')
+        closeModal()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const fetchModal = async () => {

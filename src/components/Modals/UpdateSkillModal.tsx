@@ -14,6 +14,7 @@ import { skillInitialValue } from '@/hooks/useFetchData';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { toast } from 'react-toastify';
 
 const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
     const [error, setError] = useState(false)
@@ -31,18 +32,22 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
     const onSubmit = async (data: SkillSchema) => {
         setLoading(true);
         try {
-            setData(data)
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }
     };
 
-    const deleteProject = async () => {
-        console.log('deletado')
+    const deleteSkill = async () => {
+        toast.success('Habilidade deletada com sucesso!')
+        closeModal()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
     const fetchModal = async () => {
@@ -158,7 +163,7 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
                         <Button
                             title='Apagar'
                             width='w-40'
-                            onClick={deleteProject}
+                            onClick={deleteSkill}
                             svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
                         />
                     </aside>

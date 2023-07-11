@@ -9,6 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { softskillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
 import Button from '../Button';
+import { toast } from 'react-toastify';
 
 const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
     const [loading, setLoading] = useState(false)
@@ -23,9 +24,12 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }

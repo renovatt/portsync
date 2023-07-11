@@ -10,6 +10,7 @@ import { skillSchema } from '@/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ErrorMessage } from '../ErrorMessage';
+import { toast } from 'react-toastify';
 
 const CreateSKillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
     const [loading, setLoading] = useState(false)
@@ -24,9 +25,12 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }

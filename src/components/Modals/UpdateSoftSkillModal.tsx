@@ -13,6 +13,7 @@ import { softskillInitialValue } from '@/hooks/useFetchData';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
     const [error, setError] = useState(false)
@@ -30,13 +31,22 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) =
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }
     };
+
+    const deleteSoftskill = async () => {
+        toast.success('Competência deletada com sucesso!')
+        closeModal()
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 
     const fetchModal = async () => {
         setLoading(true)
@@ -54,10 +64,6 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) =
         } finally {
             setLoading(false)
         }
-    }
-
-    const deleteProject = async () => {
-        console.log('deletado')
     }
 
     useEffect(() => {
@@ -122,7 +128,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalTypeProps) =
                         <Button
                             title='Apagar'
                             width='w-40'
-                            onClick={deleteProject}
+                            onClick={deleteSoftskill}
                             svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
                         />
                     </aside>

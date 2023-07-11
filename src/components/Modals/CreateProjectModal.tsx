@@ -12,6 +12,7 @@ import Button from '../Button';
 import InputNumber from '../InputNumber';
 import TextArea from '../TextArea';
 import TechList from '../TechList';
+import { toast } from 'react-toastify';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
     const [loading, setLoading] = useState(false)
@@ -26,9 +27,12 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalTypeProps) => {
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }

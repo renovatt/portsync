@@ -12,6 +12,7 @@ import TextArea from '../TextArea';
 import { profileInitialValue } from '@/hooks/useFetchData';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => {
     const [error, setError] = useState(false)
@@ -29,9 +30,12 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalTypeProps) => 
         setLoading(true);
         try {
             console.log(data)
-            console.log('Salvo com sucesso.')
+            toast.success('Salvo com sucesso!')
+            closeModal()
+            window.scrollTo({ top: 0, behavior: 'smooth' })
         } catch (error) {
             console.log(error)
+            toast.error('Aconteceu algum erro!')
         } finally {
             setLoading(false);
         }
