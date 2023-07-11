@@ -73,7 +73,6 @@ export type ButtonProps = {
     width?: string;
     textHidden?: string;
     onClick?: () => void;
-    onMouseOver?: () => void;
     type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
@@ -83,6 +82,14 @@ export type InputProps = {
     width?: string;
     placeholder: string;
 };
+
+export type TextAreaProps = {
+    name: string;
+    label: string;
+    placeholder: string;
+    width?: string;
+    rows?: number;
+}
 
 export type ListProps = {
     title: string;

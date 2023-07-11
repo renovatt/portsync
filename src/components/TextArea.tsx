@@ -1,18 +1,10 @@
 import { useFormContext } from 'react-hook-form'
 import { forwardRef } from 'react';
 import Label from "./Label"
+import { TextAreaProps } from '@/@types';
 
-type InputProps = {
-    name: string;
-    label: string;
-    placeholder: string;
-    width?: string;
-    rows?: number;
-    col?: number;
-}
-
-const TextArea = forwardRef<HTMLInputElement, InputProps>(
-    ({ name, label, placeholder, rows, col, width, ...props }, _ref) => {
+const TextArea = forwardRef<HTMLInputElement, TextAreaProps>(
+    ({ name, label, placeholder, rows, width, ...props }, _ref) => {
         const { register } = useFormContext()
 
         return (
