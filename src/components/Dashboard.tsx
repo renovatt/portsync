@@ -168,7 +168,7 @@ const Dashboard = () => {
             )}
 
             <section
-                className='flex flex-col justify-between items-start min-h-screen h-full w-screen max-w-[1200px] md:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
+                className='flex flex-col justify-between items-start min-h-screen h-full w-screen max-w-[1200px] lg:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
             >
                 <header className='flex justify-between items-center w-full p-0 md:p-2 h-20'>
                     <Link
@@ -230,8 +230,8 @@ const Dashboard = () => {
                     </nav>
                 </header>
 
-                <article className='flex flex-col md:flex-row justify-center items-center w-full md:p-0 pt-48'>
-                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
+                <article className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full pt-48'>
+                    <section className='flex justify-start items-center flex-col w-full max-h-80 m-4 overflow-y-scroll overflow-x-hidden relative'>
                         {projects && projects
                             .sort((a, b) => a.order - b.order)
                             .map(project => (
@@ -244,7 +244,7 @@ const Dashboard = () => {
                             ))}
                     </section>
 
-                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
+                    <section className='flex justify-start items-center flex-col w-full max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
                         {skills && skills.map(skill => (
                             <Button
                                 key={skill.id}
@@ -255,7 +255,7 @@ const Dashboard = () => {
                         ))}
                     </section>
 
-                    <section className='flex justify-start items-center flex-col max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
+                    <section className='flex justify-start items-center flex-col w-full max-h-80 m-4 overflow-y-scroll overflow-x-hidden'>
                         {softskills && softskills.map(softskill => (
                             <Button
                                 key={softskill.id}
