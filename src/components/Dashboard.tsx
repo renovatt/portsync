@@ -5,8 +5,8 @@ import Button from './Button'
 import { useState } from 'react'
 import { FiEdit } from 'react-icons/fi'
 import { HiOutlineFolderAdd } from 'react-icons/hi'
+import { LuFolderClosed } from 'react-icons/lu'
 import { BiAddToQueue } from 'react-icons/bi'
-import { useToggle } from '@/hooks/useToggle'
 import { Loader } from './Helper/Loader'
 import useFetchData from '@/hooks/useFetchData'
 import UpdateProjectModal from './Modals/UpdateProjectModal'
@@ -17,9 +17,11 @@ import CreateProjectModal from './Modals/CreateProjectModal'
 import CreateSKillModal from './Modals/CreateSKillModal'
 import CreateSoftskillModal from './Modals/CreateSoftskillModal'
 import { CreateModalType, UpdateModalType } from '@/@types'
+import { useToggle } from '@/hooks/useToggle'
 
 const Dashboard = () => {
     const [aside, setAside] = useState(false)
+    const [isMobildeButtonActive, setIsMobileButtonActive] = useState(false)
 
     const [isNewProject, setNewProject] = useState(false)
     const [isNewSkill, setNewSkill] = useState(false)
@@ -42,12 +44,14 @@ const Dashboard = () => {
         skills,
         softskills, } = useFetchData();
 
-    const handleShowAside = () => {
-        setAside(true)
+    const handleShowAndHideAside = () => {
+        setAside(!aside)
+        setIsMobileButtonActive(!isMobildeButtonActive)
     }
 
     const handleHideAside = () => {
         setAside(false)
+        setIsMobileButtonActive(false)
     }
 
     const handleCreateProject = () => {
@@ -67,6 +71,7 @@ const Dashboard = () => {
         setProfileId('');
         setProjectId('');
         setSoftskillId('');
+        handleHideAside();
 
         const stateMap: Record<UpdateModalType,
             React.Dispatch<React.SetStateAction<string>>> = {
@@ -164,7 +169,6 @@ const Dashboard = () => {
 
             <section
                 className='flex flex-col justify-between items-start min-h-screen h-full w-screen max-w-[1200px] md:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
-                onClick={handleHideAside}
             >
                 <header className='flex justify-between items-center w-full p-0 md:p-2 h-20'>
                     <Link
@@ -188,8 +192,8 @@ const Dashboard = () => {
                             title='Adicionar'
                             width='w-14 md:w-60'
                             textHidden='hidden md:flex'
-                            svg={<HiOutlineFolderAdd />}
-                            onMouseOver={handleShowAside}
+                            svg={isMobildeButtonActive ? <LuFolderClosed /> : <HiOutlineFolderAdd />}
+                            onClick={handleShowAndHideAside}
                         />
 
                         {aside && (
