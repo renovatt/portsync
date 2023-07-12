@@ -6,7 +6,7 @@ export const Footer = () => {
     const currentYear = date.getFullYear();
 
     return (
-        <footer className='flex items-center justify-around h-20 border-t border-textPrimary  bg-backgroundSecundary'>
+        <footer className='flex flex-col md:flex-row justify-around items-center w-full p-2 h-20 border-t border-textPrimary'>
             <section className='flex'>
                 <span className='m-1 text-white font-bold'>&copy; {currentYear} willcode | Powered by</span>
                 <Link
