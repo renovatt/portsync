@@ -43,25 +43,27 @@ type ErrorResponseProps = {
     error: string;
 }
 
-export type ProfileSchema = z.infer<typeof profileSchema>
-export type ProjectSchema = z.infer<typeof projectSchema>
-export type SkillSchema = z.infer<typeof skillSchema>
-export type SoftskillSchema = z.infer<typeof softskillSchema>
-
-export type APISkillsResponse = SkillsResponse | ErrorResponseProps;
-export type APISoftskillsResponse = SoftskillsResponse | ErrorResponseProps;
-export type APIProjectsResponse = ProjectsResponse | ErrorResponseProps;
-export type APIProjectResponse = ProjectResponse | ErrorResponseProps;
-export type APIProfileResponse = ProfileResponse | ErrorResponseProps;
-export type APISkillResponse = SkillResponse | ErrorResponseProps;
-export type APISoftskillResponse = SoftskillResponse | ErrorResponseProps;
-export type APIProfileIdResponse = ProfileIdResponse | ErrorResponseProps;
-
-export type ContainerTypeProps = {
+export type Children = {
     children: React.ReactNode;
 }
 
-export type ModalTypeProps = {
+export type FormProps = {
+    children: React.ReactNode;
+    onSubmit: () => void;
+}
+
+export type TableProps = {
+    headers: string[];
+    children: React.ReactNode;
+}
+
+export type ModalProps = {
+    children: React.ReactNode;
+    closeModal: () => void;
+    toggleModal: () => void;
+}
+
+export type ModalFunctionProps = {
     id?: string;
     closeModal: () => void;
     toggleModal: () => void;
@@ -95,5 +97,48 @@ export type ListProps = {
     title: string;
 }
 
-export type CreateModalType = 'newProject' | 'newSkill' | 'newSoftskill';
-export type UpdateModalType = 'profile' | 'project' | 'skill' | 'softskill';
+export type CreateModalFunctionProps = 'newProject' | 'newSkill' | 'newSoftskill';
+export type UpdateModalFunctionProps = 'profile' | 'project' | 'skill' | 'softskill';
+
+export type ProfileSchema = z.infer<typeof profileSchema>
+export type ProjectSchema = z.infer<typeof projectSchema>
+export type SkillSchema = z.infer<typeof skillSchema>
+export type SoftskillSchema = z.infer<typeof softskillSchema>
+
+export type APISkillsResponse = SkillsResponse | ErrorResponseProps;
+export type APISoftskillsResponse = SoftskillsResponse | ErrorResponseProps;
+export type APIProjectsResponse = ProjectsResponse | ErrorResponseProps;
+export type APIProjectResponse = ProjectResponse | ErrorResponseProps;
+export type APIProfileResponse = ProfileResponse | ErrorResponseProps;
+export type APISkillResponse = SkillResponse | ErrorResponseProps;
+export type APISoftskillResponse = SoftskillResponse | ErrorResponseProps;
+export type APIProfileIdResponse = ProfileIdResponse | ErrorResponseProps;
+
+export type InitialValueProps = {
+    profile: ProfileSchema[];
+    projects: ProjectSchema[];
+    skills: SkillSchema[];
+    softskills: SoftskillSchema[];
+    loading: boolean;
+    error: boolean;
+    modal: boolean;
+    aside: boolean;
+    isMobileButtonActive: boolean;
+    isNewProject: boolean;
+    isNewSkill: boolean;
+    isNewSoftskill: boolean;
+    profileId: string,
+    projectId: string,
+    skillId: string,
+    softskillId: string,
+    handleShowAndHideAside: () => void,
+    handleHideAside: () => void,
+    handleCreateProject: () => void,
+    handleCreateSkill: () => void,
+    handleCreateSoftskill: () => void,
+    handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void,
+    handleCreateModal: (modalType: CreateModalFunctionProps) => void,
+    closeModal: () => void,
+    toggleModal: () => void
+
+};
