@@ -1,9 +1,10 @@
-
 import './globals.css'
+import Header from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Footer } from '@/components/Footer'
 import { Chakra_Petch } from 'next/font/google'
 import { ToastifyProvider } from '@/components/ToastifyProvider'
+import { ContextProvider } from '@/hooks/useContext'
 
 const chakra_Petch = Chakra_Petch({
   subsets: ['latin'],
@@ -24,12 +25,15 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={chakra_Petch.className}>
-        <ToastifyProvider>
-          <Container>
-            {children}
-          </Container>
-          <Footer />
-        </ToastifyProvider>
+        <ContextProvider>
+          <ToastifyProvider>
+            <Header />
+            <Container>
+              {children}
+            </Container>
+            <Footer />
+          </ToastifyProvider>
+        </ContextProvider>
       </body>
     </html>
   )
