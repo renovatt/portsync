@@ -1,13 +1,13 @@
 'use client'
 
-import { Loader } from "@/components/Helper/Loader";
 import Dashboard from "@/components/Dashboard";
-import useFetchData from "@/hooks/useFetchData";
+import { Loader } from "@/components/Helper/Loader";
+import { useGlobalContext } from "@/hooks/useContext";
 
 export default function Home() {
   const {
     loading,
-    error } = useFetchData();
+    error } = useGlobalContext();
 
   if (loading) {
     return <Loader />
