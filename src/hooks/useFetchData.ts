@@ -53,7 +53,7 @@ export const softskillInitialValue: SoftskillSchema = {
 const useFetchData = () => {
     const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    const [profile, setProfile] = React.useState<ProfileSchema[]>()
+    const [profile, setProfile] = React.useState<ProfileSchema[]>([])
     const [projects, setProjects] = React.useState<ProjectSchema[]>([])
     const [skills, setSkills] = React.useState<SkillSchema[]>([]);
     const [softskills, setSoftSkills] = React.useState<SoftskillSchema[]>([]);
