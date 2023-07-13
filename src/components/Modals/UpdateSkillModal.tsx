@@ -1,9 +1,7 @@
 import { ModalFunctionProps, SkillSchema } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import Input from '../Input';
 import { Field } from '../Field';
 import TextArea from '../TextArea';
-import { BsSend } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -17,6 +15,7 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import { GridLinksInputs, GridTextAreaInput } from '../GridInputs';
 
 const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -81,7 +80,7 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex md:flex-row flex-col'>
+                    <GridLinksInputs>
                         <Controller
                             name='skill_name'
                             control={methods.control}
@@ -113,9 +112,9 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridLinksInputs>
 
-                    <section className='mt-2 flex flex-col justify-start items-start'>
+                    <GridTextAreaInput>
                         <Controller
                             name='description'
                             control={methods.control}
@@ -131,7 +130,7 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridTextAreaInput>
 
                     <Button
                         type='submit'

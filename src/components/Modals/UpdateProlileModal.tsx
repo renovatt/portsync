@@ -1,7 +1,5 @@
 import { ModalFunctionProps, ProfileSchema } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import { Field } from '../Field';
-import { BsSend } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -15,6 +13,7 @@ import { FaRegSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import { GridTextAreaInput } from '../GridInputs';
 
 const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -72,7 +71,7 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='mt-2 flex flex-col justify-start items-start'>
+                    <GridTextAreaInput>
                         <Controller
                             name='description_1'
                             control={methods.control}
@@ -106,7 +105,7 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridTextAreaInput>
 
                     <Button
                         type='submit'

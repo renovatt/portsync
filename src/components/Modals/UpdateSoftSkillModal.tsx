@@ -1,8 +1,6 @@
 import { ModalFunctionProps, SoftskillSchema } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import Input from '../Input';
 import { Field } from '../Field';
-import { BsSend } from 'react-icons/bs';
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
@@ -16,6 +14,7 @@ import { FaRegSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import { GridNameInputs } from '../GridInputs';
 
 const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -79,7 +78,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex'>
+                    <GridNameInputs>
                         <Controller
                             name='softskill_name'
                             control={methods.control}
@@ -95,7 +94,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridNameInputs>
 
                     <Button
                         type='submit'

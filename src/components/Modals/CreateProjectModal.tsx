@@ -4,7 +4,6 @@ import { ModalFunctionProps, ProjectSchema } from '@/@types';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { BsSend } from 'react-icons/bs';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import { Field } from '../Field';
 import { ErrorMessage } from '../ErrorMessage';
 import Input from '../Input';
@@ -15,6 +14,11 @@ import TechList from '../TechList';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import {
+    GridLinksInputs,
+    GridNameInputs,
+    GridTextAreaInput
+} from '../GridInputs';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const [loading, setLoading] = useState(false)
@@ -47,7 +51,7 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex'>
+                    <GridNameInputs>
                         <Field>
                             <Input
                                 name='project_name'
@@ -66,9 +70,9 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
                             />
                             <ErrorMessage field='order' />
                         </Field>
-                    </section>
+                    </GridNameInputs>
 
-                    <section className='flex md:flex-row flex-col'>
+                    <GridLinksInputs>
                         <Field>
                             <Input
                                 name='banner_url'
@@ -95,20 +99,20 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
                             />
                             <ErrorMessage field='deploy_url' />
                         </Field>
-                    </section>
+                    </GridLinksInputs>
 
                     <Field>
                         <TechList />
                         <ErrorMessage field='techs.links' />
                     </Field>
 
-                    <section className='mt-2 mb-4 flex flex-col justify-start items-start'>
+                    <GridTextAreaInput>
                         <TextArea label='Descrição'
                             name='description'
                             placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
                         />
                         <ErrorMessage field='description' />
-                    </section>
+                    </GridTextAreaInput>
 
                     <Button
                         type='submit'

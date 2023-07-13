@@ -1,5 +1,4 @@
 import { ModalFunctionProps, SoftskillSchema } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import Input from '../Input';
 import { Field } from '../Field';
 import { BsSend } from 'react-icons/bs';
@@ -12,6 +11,7 @@ import Button from '../Button';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import { GridNameInputs } from '../GridInputs';
 
 const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const [loading, setLoading] = useState(false)
@@ -44,7 +44,7 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex'>
+                    <GridNameInputs>
                         <Field>
                             <Input
                                 name='softskill_name'
@@ -53,7 +53,7 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
                             />
                             <ErrorMessage field='softskill_name' />
                         </Field>
-                    </section>
+                    </GridNameInputs>
 
                     <Button
                         type='submit'

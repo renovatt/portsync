@@ -4,7 +4,6 @@ import TextArea from '../TextArea';
 import Button from '../Button';
 import { Field } from '../Field';
 import { BsSend } from 'react-icons/bs';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import { ModalFunctionProps, SkillSchema } from '@/@types';
 import { skillSchema } from '@/zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,6 +12,10 @@ import { ErrorMessage } from '../ErrorMessage';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import {
+    GridLinksInputs,
+    GridTextAreaInput
+} from '../GridInputs';
 
 const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const [loading, setLoading] = useState(false)
@@ -45,7 +48,7 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex md:flex-row flex-col'>
+                    <GridLinksInputs>
                         <Field>
                             <Input
                                 name='skill_name'
@@ -63,15 +66,15 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
                             />
                             <ErrorMessage field='svg_link' />
                         </Field>
-                    </section>
+                    </GridLinksInputs>
 
-                    <section className='mt-2 mb-4 flex flex-col justify-start items-start'>
+                    <GridTextAreaInput>
                         <TextArea label='Descrição'
                             name='description'
                             placeholder='Lorem ipsum dolor sit amet consectetur adipisicing elit.'
                         />
                         <ErrorMessage field='description' />
-                    </section>
+                    </GridTextAreaInput>
 
                     <Button
                         type='submit'

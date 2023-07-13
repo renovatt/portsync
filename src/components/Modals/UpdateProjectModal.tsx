@@ -1,5 +1,4 @@
 import { ModalFunctionProps, ProjectSchema } from '@/@types';
-import { RiCloseCircleLine } from 'react-icons/ri'
 import { FaRegSave } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import { Field } from '../Field';
@@ -15,10 +14,14 @@ import { projectSchema } from '@/zod';
 import InputNumber from '../InputNumber';
 import TechList from '../TechList';
 import { ErrorMessage } from '../ErrorMessage';
-import { Loader } from '../Helper/Loader';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import {
+    GridLinksInputs,
+    GridNameInputs,
+    GridTextAreaInput
+} from '../GridInputs';
 
 const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -82,7 +85,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                 toggleModal={toggleModal}
             >
                 <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <section className='flex'>
+                    <GridNameInputs>
                         <Controller
                             name='project_name'
                             control={methods.control}
@@ -115,9 +118,9 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridNameInputs>
 
-                    <section className='flex md:flex-row flex-col'>
+                    <GridLinksInputs>
                         <Controller
                             name='banner_url'
                             control={methods.control}
@@ -165,14 +168,14 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridLinksInputs>
 
                     <Field>
                         <TechList />
                         <ErrorMessage field='techs.links' />
                     </Field>
 
-                    <section className='mt-2 flex md:flex-row flex-col justify-start items-start'>
+                    <GridTextAreaInput>
                         <Controller
                             name='description'
                             control={methods.control}
@@ -188,7 +191,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                                 </Field>
                             )}
                         />
-                    </section>
+                    </GridTextAreaInput>
 
                     <Button
                         type='submit'
