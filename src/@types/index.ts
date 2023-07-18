@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ReactElement } from "react";
 import {
+    secretKeySchema,
     profileSchema,
     projectSchema,
     skillSchema,
@@ -69,6 +70,10 @@ export type ModalFunctionProps = {
     toggleModal: () => void;
 }
 
+export interface SecretKeyModalProps extends ModalFunctionProps {
+    handleSecretKeyModalSubmit: (secretKey: string) => void;
+}
+
 export type ButtonProps = {
     title: string;
     svg: ReactElement;
@@ -82,6 +87,7 @@ export type InputProps = {
     name: string;
     label: string;
     width?: string;
+    type?: string;
     placeholder: string;
 };
 
@@ -97,6 +103,10 @@ export type ListProps = {
     title: string;
 }
 
+export type EncryptedSecretKeyProps = {
+    encryptedSecretKey: string;
+}
+
 export type CreateModalFunctionProps = 'newProject' | 'newSkill' | 'newSoftskill';
 export type UpdateModalFunctionProps = 'profile' | 'project' | 'skill' | 'softskill';
 
@@ -104,15 +114,20 @@ export type ProfileSchema = z.infer<typeof profileSchema>
 export type ProjectSchema = z.infer<typeof projectSchema>
 export type SkillSchema = z.infer<typeof skillSchema>
 export type SoftskillSchema = z.infer<typeof softskillSchema>
+export type SecretKeySchema = z.infer<typeof secretKeySchema>
 
+export type APIProjectsResponse = ProjectsResponse | ErrorResponseProps;
 export type APISkillsResponse = SkillsResponse | ErrorResponseProps;
 export type APISoftskillsResponse = SoftskillsResponse | ErrorResponseProps;
-export type APIProjectsResponse = ProjectsResponse | ErrorResponseProps;
-export type APIProjectResponse = ProjectResponse | ErrorResponseProps;
+
 export type APIProfileResponse = ProfileResponse | ErrorResponseProps;
+export type APIProjectResponse = ProjectResponse | ErrorResponseProps;
+
 export type APISkillResponse = SkillResponse | ErrorResponseProps;
 export type APISoftskillResponse = SoftskillResponse | ErrorResponseProps;
 export type APIProfileIdResponse = ProfileIdResponse | ErrorResponseProps;
+
+export type APISeretKeyResponse = string | ErrorResponseProps;
 
 export type InitialValueProps = {
     profile: ProfileSchema[];
@@ -120,9 +135,11 @@ export type InitialValueProps = {
     skills: SkillSchema[];
     softskills: SoftskillSchema[];
     loading: boolean;
-    error: boolean;
+    error: boolean | string;
     modal: boolean;
     aside: boolean;
+    secretKeyModal: boolean;
+    deleteButton: boolean;
     isMobileButtonActive: boolean;
     isNewProject: boolean;
     isNewSkill: boolean;
@@ -131,14 +148,16 @@ export type InitialValueProps = {
     projectId: string,
     skillId: string,
     softskillId: string,
+    handleOpenSecretKeyModal: () => void,
+    handleCloseSecretKeyModal: () => void,
+    handleDeleteButton: () => void,
     handleShowAndHideAside: () => void,
     handleHideAside: () => void,
     handleCreateProject: () => void,
     handleCreateSkill: () => void,
     handleCreateSoftskill: () => void,
-    handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void,
-    handleCreateModal: (modalType: CreateModalFunctionProps) => void,
     closeModal: () => void,
     toggleModal: () => void
-
+    handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void,
+    handleCreateModal: (modalType: CreateModalFunctionProps) => void,
 };
