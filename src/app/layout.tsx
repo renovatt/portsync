@@ -3,8 +3,8 @@ import Header from '@/components/Header'
 import { Container } from '@/components/Container'
 import { Footer } from '@/components/Footer'
 import { Chakra_Petch } from 'next/font/google'
-import { ToastifyProvider } from '@/components/ToastifyProvider'
-import { ContextProvider } from '@/hooks/useContext'
+import { ToastifyProvider } from '@/components/Providers/ToastifyProvider'
+import { ContextProvider } from '@/components/Providers/ContextProvider'
 import { Metadata } from 'next'
 
 const chakra_Petch = Chakra_Petch({
