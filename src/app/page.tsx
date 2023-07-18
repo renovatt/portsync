@@ -7,7 +7,8 @@ import { useGlobalContext } from "@/components/Providers/ContextProvider";
 export default function Home() {
   const {
     loading,
-    error } = useGlobalContext();
+    error
+  } = useGlobalContext();
 
   if (loading) {
     return <Loader />
