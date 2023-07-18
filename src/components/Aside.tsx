@@ -1,4 +1,4 @@
-import { useGlobalContext } from '@/hooks/useContext';
+import { useGlobalContext } from '@/components/Providers/ContextProvider';
 import Button from './Button';
 import { BiAddToQueue } from 'react-icons/bi';
 

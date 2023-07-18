@@ -2,8 +2,8 @@
 
 import Button from './Button'
 import { FiEdit } from 'react-icons/fi'
-import { useGlobalContext } from '@/hooks/useContext'
 import { Table, TableCell, TableRow } from './Table'
+import { useGlobalContext } from '@/components/Providers/ContextProvider'
 import UpdateProjectModal from './Modals/UpdateProjectModal'
 import UpdateSkillModal from './Modals/UpdateSkillModal'
 import UpdateProlileModal from './Modals/UpdateProlileModal'

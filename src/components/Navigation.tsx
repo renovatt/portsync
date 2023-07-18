@@ -5,7 +5,7 @@ import Button from './Button';
 import { FiEdit } from 'react-icons/fi';
 import { LuFolderClosed } from 'react-icons/lu';
 import { HiOutlineFolderAdd } from 'react-icons/hi';
-import { useGlobalContext } from '@/hooks/useContext';
+import { useGlobalContext } from '@/components/Providers/ContextProvider';
 
 function Navigation() {
     const {
