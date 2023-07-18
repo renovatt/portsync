@@ -2,7 +2,7 @@
 
 import Dashboard from "@/components/Dashboard";
 import { Loader } from "@/components/Helper/Loader";
-import { useGlobalContext } from "@/hooks/useContext";
+import { useGlobalContext } from "@/components/Providers/ContextProvider";
 
 export default function Home() {
   const {
