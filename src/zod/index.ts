@@ -89,3 +89,9 @@ export const softskillSchema = z.object({
         .nonempty('Nome obrigatório.')
         .min(3, 'Minimo de 3 char'),
 })
+
+export const secretKeySchema = z.object({
+    secretKey: z
+        .string()
+        .nonempty('Senha obrigatória!')
+})
