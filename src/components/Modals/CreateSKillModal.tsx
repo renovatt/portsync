@@ -16,6 +16,10 @@ import {
     GridLinksInputs,
     GridTextAreaInput
 } from '../GridInputs';
+import useAPI from '@/hooks/useAPI';
+import { useGlobalContext } from '../Providers/ContextProvider';
+import { postSecretkey } from '@/services';
+import SecretKeyModal from '../SecretKeyModal';
 
 const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const [loading, setLoading] = useState(false)
@@ -26,20 +30,43 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
         resolver: zodResolver(skillSchema)
     });
 
-    const onSubmit = async (data: SkillSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
+    const {
+        response,
+        error,
+        postSkillData
+    } = useAPI();
+
+    const {
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
+    };
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await postSkillData(data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(error);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
         }
     };
+
 
     return (
         <FormProvider {...methods}>
@@ -84,6 +111,14 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
                     />
                 </Form>
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }

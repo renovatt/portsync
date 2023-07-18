@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { softskillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
-import { getSoftskillById } from '@/services';
-import { softskillInitialValue } from '@/hooks/useFetchData';
+import { getSoftskillById, postSecretkey } from '@/services';
+import useAPI, { softskillInitialValue } from '@/hooks/useAPI';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
@@ -15,6 +15,8 @@ import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
 import { GridNameInputs } from '../GridInputs';
+import { useGlobalContext } from '../Providers/ContextProvider';
+import SecretKeyModal from '../SecretKeyModal';
 
 const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -28,26 +30,78 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         defaultValues: softskill
     });
 
-    const onSubmit = async (data: SoftskillSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
-        }
+    const {
+        response,
+        error: errorAPI,
+        putSoftskillData,
+        deleteSoftskillData
+    } = useAPI();
+
+    const {
+        deleteButton,
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal,
+        handleDeleteButton
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
     };
 
     const deleteSoftskill = async () => {
-        toast.success('Competência deletada com sucesso!')
-        closeModal()
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        handleDeleteButton()
+        handleOpenSecretKeyModal();
     }
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        if (!deleteButton) {
+            handlePutSubmit(secretKeyValue)
+        } else {
+            handleDeleteSubmit(secretKeyValue)
+        }
+    };
+
+    const handlePutSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await putSoftskillData(id!, data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    }
+
+    const handleDeleteSubmit = async (secretKeyValue: string) => {
+        const encryptedSecretKey = await postSecretkey(secretKeyValue);
+
+        if (typeof encryptedSecretKey === 'string') {
+            await deleteSoftskillData(id!, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    };
 
     const fetchModal = async () => {
         setLoading(true)
@@ -73,46 +127,59 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
 
     return (
         <FormProvider {...methods}>
+
             <Modal
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >
-                <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <GridNameInputs>
-                        <Controller
-                            name='softskill_name'
-                            control={methods.control}
-                            defaultValue={softskill?.softskill_name}
-                            render={({ field }) => (
-                                <Field>
-                                    <Input
-                                        label='Nome da Competênica'
-                                        placeholder='Resiliênica'
-                                        {...field}
-                                    />
-                                    <ErrorMessage field='softskill_name' />
-                                </Field>
-                            )}
-                        />
-                    </GridNameInputs>
+                {loading ? <p className='text-white'>Carregando</p> : (
+                    <>
+                        <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                            <GridNameInputs>
+                                <Controller
+                                    name='softskill_name'
+                                    control={methods.control}
+                                    defaultValue={softskill?.softskill_name}
+                                    render={({ field }) => (
+                                        <Field>
+                                            <Input
+                                                label='Nome da Competênica'
+                                                placeholder='Resiliênica'
+                                                {...field}
+                                            />
+                                            <ErrorMessage field='softskill_name' />
+                                        </Field>
+                                    )}
+                                />
+                            </GridNameInputs>
 
-                    <Button
-                        type='submit'
-                        title='Salvar'
-                        width='w-40'
-                        svg={<FaRegSave className='text-white w-6 h-6' />}
-                    />
-                </Form>
+                            <Button
+                                type='submit'
+                                title='Salvar'
+                                width='w-40'
+                                svg={<FaRegSave className='text-white w-6 h-6' />}
+                            />
+                        </Form>
 
-                <aside className='flex flex-col justify-center items-start md:items-end w-full'>
-                    <Button
-                        title='Apagar'
-                        width='w-40'
-                        onClick={deleteSoftskill}
-                        svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
-                    />
-                </aside>
+                        <aside className='flex flex-col justify-center items-start md:items-end w-full'>
+                            <Button
+                                title='Apagar'
+                                width='w-40'
+                                onClick={deleteSoftskill}
+                                svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
+                            />
+                        </aside>
+                    </>
+                )}
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }

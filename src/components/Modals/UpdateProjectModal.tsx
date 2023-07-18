@@ -6,8 +6,8 @@ import Input from '../Input';
 import Button from '../Button';
 import TextArea from '../TextArea';
 import { useEffect, useState } from 'react';
-import { getProjectsById } from '@/services';
-import { projectInitialValue } from '@/hooks/useFetchData';
+import { getProjectsById, postSecretkey } from '@/services';
+import useAPI, { projectInitialValue } from '@/hooks/useAPI';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { projectSchema } from '@/zod';
@@ -22,6 +22,8 @@ import {
     GridNameInputs,
     GridTextAreaInput
 } from '../GridInputs';
+import { useGlobalContext } from '../Providers/ContextProvider';
+import SecretKeyModal from '../SecretKeyModal';
 
 const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -35,26 +37,79 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         defaultValues: project
     });
 
-    const onSubmit = async (data: ProjectSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
-        }
+    const {
+        response,
+        error: errorAPI,
+        putProjectData,
+        deleteSoftskillData
+    } = useAPI();
+
+    const {
+        deleteButton,
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal,
+        handleDeleteButton
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
     };
 
     const deleteProject = async () => {
-        toast.success('Projeto deletado com sucesso!')
-        closeModal()
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        handleDeleteButton()
+        handleOpenSecretKeyModal();
     }
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        if (!deleteButton) {
+            handlePutSubmit(secretKeyValue)
+        } else {
+            handleDeleteSubmit(secretKeyValue)
+        }
+    };
+
+    const handlePutSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await putProjectData(id!, data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    }
+
+    const handleDeleteSubmit = async (secretKeyValue: string) => {
+        const encryptedSecretKey = await postSecretkey(secretKeyValue);
+
+        if (typeof encryptedSecretKey === 'string') {
+            await deleteSoftskillData(id!, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    };
+
 
     const fetchModal = async () => {
         setLoading(true)
@@ -210,6 +265,14 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                     />
                 </aside>
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }

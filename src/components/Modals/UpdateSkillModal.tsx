@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { skillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
-import { getSkillById } from '@/services';
-import { skillInitialValue } from '@/hooks/useFetchData';
+import { getSkillById, postSecretkey } from '@/services';
+import useAPI, { skillInitialValue } from '@/hooks/useAPI';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
@@ -16,10 +16,11 @@ import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
 import { GridLinksInputs, GridTextAreaInput } from '../GridInputs';
+import { useGlobalContext } from '../Providers/ContextProvider';
+import SecretKeyModal from '../SecretKeyModal';
 
 const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
-    const [data, setData] = useState<SkillSchema>()
     const [loading, setLoading] = useState(false)
     const [skill, setSkill] = useState<SkillSchema>(skillInitialValue)
 
@@ -30,26 +31,78 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
         defaultValues: skill
     });
 
-    const onSubmit = async (data: SkillSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
-        }
+    const {
+        response,
+        error: errorAPI,
+        putSkillData,
+        deleteSoftskillData
+    } = useAPI();
+
+    const {
+        deleteButton,
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal,
+        handleDeleteButton
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
     };
 
     const deleteSkill = async () => {
-        toast.success('Habilidade deletada com sucesso!')
-        closeModal()
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        handleDeleteButton()
+        handleOpenSecretKeyModal();
     }
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        if (!deleteButton) {
+            handlePutSubmit(secretKeyValue)
+        } else {
+            handleDeleteSubmit(secretKeyValue)
+        }
+    };
+
+    const handlePutSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await putSkillData(id!, data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    }
+
+    const handleDeleteSubmit = async (secretKeyValue: string) => {
+        const encryptedSecretKey = await postSecretkey(secretKeyValue);
+
+        if (typeof encryptedSecretKey === 'string') {
+            await deleteSoftskillData(id!, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    };
 
     const fetchModal = async () => {
         setLoading(true)
@@ -148,6 +201,14 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                     />
                 </aside>
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }

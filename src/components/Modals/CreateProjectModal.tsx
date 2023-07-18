@@ -19,6 +19,10 @@ import {
     GridNameInputs,
     GridTextAreaInput
 } from '../GridInputs';
+import { useGlobalContext } from '../Providers/ContextProvider';
+import useAPI from '@/hooks/useAPI';
+import { postSecretkey } from '@/services';
+import SecretKeyModal from '../SecretKeyModal';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const [loading, setLoading] = useState(false)
@@ -29,18 +33,40 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
         resolver: zodResolver(projectSchema)
     });
 
-    const onSubmit = async (data: ProjectSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
+    const {
+        response,
+        error,
+        postProjectData
+    } = useAPI();
+
+    const {
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
+    };
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await postProjectData(data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(error);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
         }
     };
 
@@ -122,6 +148,14 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
                     />
                 </Form>
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }

@@ -5,15 +5,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { profileSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
-import { getProfileById } from '@/services';
+import { getProfileById, postSecretkey } from '@/services';
 import TextArea from '../TextArea';
-import { profileInitialValue } from '@/hooks/useFetchData';
+import useAPI, { profileInitialValue } from '@/hooks/useAPI';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
 import { GridTextAreaInput } from '../GridInputs';
+import SecretKeyModal from '../SecretKeyModal';
+import { useGlobalContext } from '../Providers/ContextProvider';
 
 const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
@@ -27,20 +29,46 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         defaultValues: profile
     });
 
-    const onSubmit = async (data: ProfileSchema) => {
-        setLoading(true);
-        try {
-            console.log(data)
-            toast.success('Salvo com sucesso!')
-            closeModal()
-            window.scrollTo({ top: 0, behavior: 'smooth' })
-        } catch (error) {
-            console.log(error)
-            toast.error('Aconteceu algum erro!')
-        } finally {
-            setLoading(false);
-        }
+    const {
+        response,
+        error: errorAPI,
+        putProfileData,
+    } = useAPI();
+
+    const {
+        secretKeyModal,
+        handleOpenSecretKeyModal,
+        handleCloseSecretKeyModal,
+    } = useGlobalContext()
+
+    const onSubmit = async () => {
+        handleOpenSecretKeyModal()
     };
+
+    const handleSecretKeyModalSubmit = async (secretKeyValue: string) => {
+        handlePutSubmit(secretKeyValue)
+    };
+
+    const handlePutSubmit = async (secretKeyValue: string) => {
+        const data = methods.getValues();
+        const encryptedSecretKey = await postSecretkey(secretKeyValue)
+
+        if (typeof encryptedSecretKey === 'string') {
+            await putProfileData(id!, data, encryptedSecretKey);
+
+            if (response) {
+                toast.success(response);
+                closeModal();
+                handleCloseSecretKeyModal()
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                toast.error(errorAPI);
+            }
+        } else {
+            const error = encryptedSecretKey.error;
+            toast.error(error);
+        }
+    }
 
     const fetchModal = async () => {
         setLoading(true)
@@ -115,6 +143,14 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                     />
                 </Form>
             </Modal>
+
+            {secretKeyModal && (
+                <SecretKeyModal
+                    closeModal={handleCloseSecretKeyModal}
+                    toggleModal={handleCloseSecretKeyModal}
+                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                />
+            )}
         </FormProvider>
     )
 }
