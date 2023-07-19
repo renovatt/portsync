@@ -12,7 +12,7 @@ const TechList = () => {
         name: 'techs.links'
     })
 
-    const addNewTech = () => append({ svg_name: '', svg_link: '', link: '' })
+    const addNewTech = () => append({ id: '', svg_name: '', svg_link: '', link: '' })
 
     return (
         <section className='flex flex-col gap-1 items-start justify-center'>
@@ -26,12 +26,23 @@ const TechList = () => {
             </button>
 
             {fields.map((field, index) => {
+                const id = `techs.links.${index}.id`
                 const svg_name = `techs.links.${index}.svg_name`
                 const svg_link = `techs.links.${index}.svg_link`
                 const link = `techs.links.${index}.link`
 
                 return (
                     <section key={field.id} className='relative md:sticky flex md:flex-row flex-col w-full justify-center md:items-center gap-2 border border-zinc-600 rounded-md md:border-none md:p-0 md:m-0 p-2 my-1'>
+                        <Field>
+                            <Input
+                                width='w-20'
+                                name={id}
+                                label='Posição n°'
+                                placeholder='2'
+                            />
+                            <ErrorMessage field={id} />
+                        </Field>
+
                         <Field>
                             <Input
                                 name={svg_name}
