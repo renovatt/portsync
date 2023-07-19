@@ -93,5 +93,5 @@ export const softskillSchema = z.object({
 export const secretKeySchema = z.object({
     secretKey: z
         .string()
-        .nonempty('Senha obrigatória!')
+        .nonempty('Código de confirmação obrigatório!')
 })
