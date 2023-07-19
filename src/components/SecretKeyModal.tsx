@@ -6,7 +6,7 @@ import { Field } from "./Field";
 import { GridNameInputs } from "./GridInputs";
 import Form from "./Form";
 import Button from "./Button";
-import { BsSend } from "react-icons/bs";
+import { RiShieldKeyholeFill } from "react-icons/ri";
 import { secretKeySchema } from "@/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,8 +38,8 @@ export default function SecretKeyModal({
                             <Input
                                 type='password'
                                 name='secretKey'
-                                label='Senha'
-                                placeholder='Digite sua senha'
+                                label='Código de confirmação'
+                                placeholder='#########################'
                             />
 
                             <ErrorMessage field='secretKey' />
@@ -50,7 +50,7 @@ export default function SecretKeyModal({
                         type='submit'
                         title='Confirmar'
                         width='w-40'
-                        svg={<BsSend className='text-white w-6 h-6' />}
+                        svg={<RiShieldKeyholeFill className='text-white w-6 h-6' />}
                     />
                 </Form>
             </Modal>
