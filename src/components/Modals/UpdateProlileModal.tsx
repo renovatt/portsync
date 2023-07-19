@@ -16,10 +16,10 @@ import Modal from '../Modal';
 import { GridTextAreaInput } from '../GridInputs';
 import SecretKeyModal from '../SecretKeyModal';
 import { useGlobalContext } from '../Providers/ContextProvider';
+import Error from '../Helper/Error';
 
 const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState<ProfileSchema>(profileInitialValue)
 
     const methods = useForm<ProfileSchema>({
@@ -65,7 +65,6 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
     }
 
     const fetchModal = async () => {
-        setLoading(true)
         try {
             const profile = await getProfileById(id!)
 
@@ -77,14 +76,23 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
             }
         } catch {
             setError(true)
-        } finally {
-            setLoading(false)
         }
     }
 
     useEffect(() => {
         fetchModal()
     }, [id])
+
+    if (error) {
+        return (
+            <Modal
+                closeModal={closeModal}
+                toggleModal={toggleModal}
+            >
+                <Error />
+            </Modal>
+        )
+    }
 
     return (
         <FormProvider {...methods}>

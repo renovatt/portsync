@@ -17,10 +17,10 @@ import Modal from '../Modal';
 import { GridNameInputs } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
 import SecretKeyModal from '../SecretKeyModal';
+import Error from '../Helper/Error';
 
 const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [softskill, setSoftskill] = useState<SoftskillSchema>(softskillInitialValue)
 
     const methods = useForm<SoftskillSchema>({
@@ -97,7 +97,6 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
     };
 
     const fetchModal = async () => {
-        setLoading(true)
         try {
             const softskill = await getSoftskillById(id!)
 
@@ -110,8 +109,6 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
 
         } catch {
             setError(true)
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -119,62 +116,70 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         fetchModal()
     }, [id])
 
-    return (
-        <FormProvider {...methods}>
-
+    if (error) {
+        return (
             <Modal
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >
-                {loading ? <p className='text-white'>Carregando</p> : (
-                    <>
-                        <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                            <GridNameInputs>
-                                <Controller
-                                    name='softskill_name'
-                                    control={methods.control}
-                                    defaultValue={softskill?.softskill_name}
-                                    render={({ field }) => (
-                                        <Field>
-                                            <Input
-                                                label='Nome da Competênica'
-                                                placeholder='Resiliênica'
-                                                {...field}
-                                            />
-                                            <ErrorMessage field='softskill_name' />
-                                        </Field>
-                                    )}
-                                />
-                            </GridNameInputs>
+                <Error />
+            </Modal>
+        )
+    }
 
-                            <Button
-                                type='submit'
-                                title='Salvar'
-                                width='w-40'
-                                svg={<FaRegSave className='text-white w-6 h-6' />}
-                            />
-                        </Form>
+    return (
+        <FormProvider {...methods}>
+            <Modal
+                closeModal={closeModal}
+                toggleModal={toggleModal}
+            >
+                <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                    <GridNameInputs>
+                        <Controller
+                            name='softskill_name'
+                            control={methods.control}
+                            defaultValue={softskill?.softskill_name}
+                            render={({ field }) => (
+                                <Field>
+                                    <Input
+                                        label='Nome da Competênica'
+                                        placeholder='Resiliênica'
+                                        {...field}
+                                    />
+                                    <ErrorMessage field='softskill_name' />
+                                </Field>
+                            )}
+                        />
+                    </GridNameInputs>
 
-                        <aside className='flex flex-col justify-center items-start md:items-end w-full'>
-                            <Button
-                                title='Apagar'
-                                width='w-40'
-                                onClick={handleDeleteSoftskill}
-                                svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
-                            />
-                        </aside>
-                    </>
-                )}
+                    <Button
+                        type='submit'
+                        title='Salvar'
+                        width='w-40'
+                        svg={<FaRegSave className='text-white w-6 h-6' />}
+                    />
+                </Form>
+
+                <aside className='flex flex-col justify-center items-start md:items-end w-full'>
+                    <Button
+                        title='Apagar'
+                        width='w-40'
+                        onClick={handleDeleteSoftskill}
+                        svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
+                    />
+                </aside>
             </Modal>
 
-            {secretKeyModal && (
-                <SecretKeyModal
-                    closeModal={handleCloseSecretKeyModal}
-                    toggleModal={handleCloseSecretKeyModal}
-                    handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
-                />
-            )}
-        </FormProvider>
+            {
+                secretKeyModal && (
+                    <SecretKeyModal
+                        closeModal={handleCloseSecretKeyModal}
+                        toggleModal={handleCloseSecretKeyModal}
+                        handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}
+                    />
+                )
+            }
+        </FormProvider >
     )
 }
 

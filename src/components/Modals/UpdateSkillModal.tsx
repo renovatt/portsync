@@ -18,10 +18,10 @@ import Modal from '../Modal';
 import { GridLinksInputs, GridTextAreaInput } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
 import SecretKeyModal from '../SecretKeyModal';
+import Error from '../Helper/Error';
 
 const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
     const [error, setError] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [skill, setSkill] = useState<SkillSchema>(skillInitialValue)
 
     const methods = useForm<SkillSchema>({
@@ -98,7 +98,6 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
     };
 
     const fetchModal = async () => {
-        setLoading(true)
         try {
             const skill = await getSkillById(id!)
 
@@ -110,14 +109,23 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
             }
         } catch {
             setError(true)
-        } finally {
-            setLoading(false)
         }
     }
 
     useEffect(() => {
         fetchModal()
     }, [id])
+
+    if (error) {
+        return (
+            <Modal
+                closeModal={closeModal}
+                toggleModal={toggleModal}
+            >
+                <Error />
+            </Modal>
+        )
+    }
 
     return (
         <FormProvider {...methods}>
