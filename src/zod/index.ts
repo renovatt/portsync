@@ -50,7 +50,7 @@ export const projectSchema = z.object({
                         .object({
                             id: z
                                 .string()
-                                .optional(),
+                                .nonempty('Informe a posição.'),
                             svg_name: z
                                 .string()
                                 .nonempty('Informe o nome da tecnologia.'),
