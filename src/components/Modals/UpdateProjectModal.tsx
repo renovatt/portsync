@@ -6,8 +6,8 @@ import Input from '../Input';
 import Button from '../Button';
 import TextArea from '../TextArea';
 import { useEffect, useState } from 'react';
-import { getProjectsById, postSecretkey } from '@/services';
-import useAPI, { projectInitialValue } from '@/hooks/useAPI';
+import { deleteProject, getProjectsById, postSecretkey, putProject } from '@/services';
+import { projectInitialValue } from '@/hooks/useAPI';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { projectSchema } from '@/zod';
@@ -38,13 +38,6 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
     });
 
     const {
-        response,
-        error: errorAPI,
-        putProjectData,
-        deleteSoftskillData
-    } = useAPI();
-
-    const {
         deleteButton,
         secretKeyModal,
         handleOpenSecretKeyModal,
@@ -56,7 +49,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         handleOpenSecretKeyModal()
     };
 
-    const deleteProject = async () => {
+    const handleDeleteProject = async () => {
         handleDeleteButton()
         handleOpenSecretKeyModal();
     }
@@ -74,7 +67,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await putProjectData(id!, data, encryptedSecretKey);
+            const { response, error } = await putProject(id!, data, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -82,7 +75,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                 handleCloseSecretKeyModal()
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                toast.error(errorAPI);
+                toast.error(error);
             }
         } else {
             const error = encryptedSecretKey.error;
@@ -94,7 +87,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         const encryptedSecretKey = await postSecretkey(secretKeyValue);
 
         if (typeof encryptedSecretKey === 'string') {
-            await deleteSoftskillData(id!, encryptedSecretKey);
+            const { response, error } = await deleteProject(id!, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -102,14 +95,13 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                 handleCloseSecretKeyModal();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                toast.error(errorAPI);
+                toast.error(error);
             }
         } else {
             const error = encryptedSecretKey.error;
             toast.error(error);
         }
     };
-
 
     const fetchModal = async () => {
         setLoading(true)
@@ -260,7 +252,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                     <Button
                         title='Apagar'
                         width='w-40'
-                        onClick={deleteProject}
+                        onClick={handleDeleteProject}
                         svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
                     />
                 </aside>

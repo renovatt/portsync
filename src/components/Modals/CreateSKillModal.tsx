@@ -16,9 +16,8 @@ import {
     GridLinksInputs,
     GridTextAreaInput
 } from '../GridInputs';
-import useAPI from '@/hooks/useAPI';
 import { useGlobalContext } from '../Providers/ContextProvider';
-import { postSecretkey } from '@/services';
+import { postSecretkey, postSkill } from '@/services';
 import SecretKeyModal from '../SecretKeyModal';
 
 const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
@@ -29,12 +28,6 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
         reValidateMode: 'onChange',
         resolver: zodResolver(skillSchema)
     });
-
-    const {
-        response,
-        error,
-        postSkillData
-    } = useAPI();
 
     const {
         secretKeyModal,
@@ -51,7 +44,7 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await postSkillData(data, encryptedSecretKey);
+            const { response, error } = await postSkill(data, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -66,7 +59,6 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
             toast.error(error);
         }
     };
-
 
     return (
         <FormProvider {...methods}>

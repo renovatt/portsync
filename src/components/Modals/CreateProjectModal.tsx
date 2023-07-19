@@ -20,8 +20,7 @@ import {
     GridTextAreaInput
 } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
-import useAPI from '@/hooks/useAPI';
-import { postSecretkey } from '@/services';
+import { postProject, postSecretkey } from '@/services';
 import SecretKeyModal from '../SecretKeyModal';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
@@ -32,12 +31,6 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
         reValidateMode: 'onChange',
         resolver: zodResolver(projectSchema)
     });
-
-    const {
-        response,
-        error,
-        postProjectData
-    } = useAPI();
 
     const {
         secretKeyModal,
@@ -54,7 +47,7 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await postProjectData(data, encryptedSecretKey);
+            const { response, error } = await postProject(data, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);

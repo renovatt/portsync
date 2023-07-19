@@ -7,13 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { softskillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
 import Button from '../Button';
-import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
+import { toast } from 'react-toastify';
 import { GridNameInputs } from '../GridInputs';
 import { useGlobalContext } from '@/components/Providers/ContextProvider';
-import { postSecretkey } from '@/services';
-import useAPI from '@/hooks/useAPI';
+import { postSecretkey, postSoftskill } from '@/services';
 import SecretKeyModal from '../SecretKeyModal';
 
 const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
@@ -22,12 +21,6 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
         reValidateMode: 'onChange',
         resolver: zodResolver(softskillSchema),
     });
-
-    const {
-        response,
-        error,
-        postSoftskillData
-    } = useAPI();
 
     const {
         secretKeyModal,
@@ -44,7 +37,7 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await postSoftskillData(data, encryptedSecretKey);
+            const { response, error } = await postSoftskill(data, encryptedSecretKey)
 
             if (response) {
                 toast.success(response);

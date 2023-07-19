@@ -5,9 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { profileSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
-import { getProfileById, postSecretkey } from '@/services';
+import { getProfileById, postSecretkey, putProfile } from '@/services';
 import TextArea from '../TextArea';
-import useAPI, { profileInitialValue } from '@/hooks/useAPI';
+import { profileInitialValue } from '@/hooks/useAPI';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -30,12 +30,6 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
     });
 
     const {
-        response,
-        error: errorAPI,
-        putProfileData,
-    } = useAPI();
-
-    const {
         secretKeyModal,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
@@ -54,7 +48,7 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await putProfileData(id!, data, encryptedSecretKey);
+            const { response, error } = await putProfile(id!, data, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -62,7 +56,7 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
                 handleCloseSecretKeyModal()
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                toast.error(errorAPI);
+                toast.error(error);
             }
         } else {
             const error = encryptedSecretKey.error;

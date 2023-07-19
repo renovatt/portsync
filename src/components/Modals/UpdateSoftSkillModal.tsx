@@ -6,8 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { softskillSchema } from '@/zod';
 import { ErrorMessage } from '../ErrorMessage';
-import { getSoftskillById, postSecretkey } from '@/services';
-import useAPI, { softskillInitialValue } from '@/hooks/useAPI';
+import { deleteSoftskill, getSoftskillById, postSecretkey, putSoftskill } from '@/services';
+import { softskillInitialValue } from '@/hooks/useAPI';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import Button from '../Button';
 import { FaRegSave } from 'react-icons/fa';
@@ -31,13 +31,6 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
     });
 
     const {
-        response,
-        error: errorAPI,
-        putSoftskillData,
-        deleteSoftskillData
-    } = useAPI();
-
-    const {
         deleteButton,
         secretKeyModal,
         handleOpenSecretKeyModal,
@@ -49,7 +42,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         handleOpenSecretKeyModal()
     };
 
-    const deleteSoftskill = async () => {
+    const handleDeleteSoftskill = async () => {
         handleDeleteButton()
         handleOpenSecretKeyModal();
     }
@@ -67,7 +60,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
         if (typeof encryptedSecretKey === 'string') {
-            await putSoftskillData(id!, data, encryptedSecretKey);
+            const { response, error } = await putSoftskill(id!, data, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -75,7 +68,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                 handleCloseSecretKeyModal()
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                toast.error(errorAPI);
+                toast.error(error);
             }
         } else {
             const error = encryptedSecretKey.error;
@@ -87,7 +80,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         const encryptedSecretKey = await postSecretkey(secretKeyValue);
 
         if (typeof encryptedSecretKey === 'string') {
-            await deleteSoftskillData(id!, encryptedSecretKey);
+            const { response, error } = await deleteSoftskill(id!, encryptedSecretKey);
 
             if (response) {
                 toast.success(response);
@@ -95,7 +88,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                 handleCloseSecretKeyModal();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                toast.error(errorAPI);
+                toast.error(error);
             }
         } else {
             const error = encryptedSecretKey.error;
@@ -114,6 +107,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
             } else if ('error' in softskill) {
                 setError(true)
             }
+
         } catch {
             setError(true)
         } finally {
@@ -165,7 +159,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                             <Button
                                 title='Apagar'
                                 width='w-40'
-                                onClick={deleteSoftskill}
+                                onClick={handleDeleteSoftskill}
                                 svg={<MdOutlineDeleteOutline className='text-white w-6 h-6' />}
                             />
                         </aside>
