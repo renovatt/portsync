@@ -1,20 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
-    postProject,
-    postSkill,
-    postSoftskill,
-    putProject,
-    putSkill,
-    deleteProject,
-    deleteSkill,
     getSkills,
     getSoftskills,
     getProjects,
     getProfile,
-    putSoftskill,
-    deleteSoftskill,
-    postSecretkey,
-    putProfile
 } from '../services';
 import {
     ProfileSchema,
@@ -64,7 +53,6 @@ export const softskillInitialValue: SoftskillSchema = {
 const useAPI = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | boolean>(false);
-    const [response, setResponse] = useState<string | null>(null);
     const [profile, setProfile] = useState<ProfileSchema[]>([])
     const [projects, setProjects] = useState<ProjectSchema[]>([]);
     const [skills, setSkills] = useState<SkillSchema[]>([]);
@@ -146,226 +134,6 @@ const useAPI = () => {
         }
     };
 
-    const postProjectData = async (data: ProjectSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await postProject(data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao enviar projeto.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const postSkillData = async (data: SkillSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await postSkill(data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao enviar habilidade.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const postSoftskillData = async (data: SoftskillSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await postSoftskill(data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao enviar softskill.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const putProfileData = async (id: string, data: ProfileSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await putProfile(id, data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao atualizar perfil.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const putProjectData = async (id: string, data: ProjectSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await putProject(id, data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao atualizar projeto.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const putSkillData = async (id: string, data: SkillSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await putSkill(id, data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao atualizar habilidade.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const putSoftskillData = async (id: string, data: SoftskillSchema, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await putSoftskill(id, data, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao atualizar habilidade.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const deleteProjectData = async (projectId: string, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await deleteProject(projectId, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao excluir projeto.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const deleteSkillData = async (skillId: string, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await deleteSkill(skillId, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao excluir habilidade.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const deleteSoftskillData = async (softskillId: string, encryptedSecretKey: string) => {
-        setLoading(true);
-        setError(false);
-        setResponse(null);
-
-        try {
-            const { response, error } = await deleteSoftskill(softskillId, encryptedSecretKey);
-
-            if (response) {
-                setResponse(response);
-            } else {
-                setError(error);
-            }
-        } catch (error) {
-            setError('Erro ao excluir habilidade.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // const postSecretKeyData = async (secretKey: string) => {
-    //     setLoading(true);
-    //     setError(false);
-    //     setResponse(null);
-
-    //     try {
-    //         const encryptedSecretKey= await postSecretkey(secretKey);
-
-    //         if (response) {
-    //             setResponse(response);
-    //         } else {
-    //             setError(error);
-    //         }
-    //     } catch (error) {
-    //         setError('Erro ao enviar softskill.');
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
     useEffect(() => {
         fetchProfile();
         fetchProjects();
@@ -376,21 +144,10 @@ const useAPI = () => {
     return {
         loading,
         error,
-        response,
         profile,
         skills,
         softskills,
-        projects,
-        postProjectData,
-        postSkillData,
-        postSoftskillData,
-        putProfileData,
-        putProjectData,
-        putSkillData,
-        putSoftskillData,
-        deleteProjectData,
-        deleteSkillData,
-        deleteSoftskillData,
+        projects
     };
 };
 
