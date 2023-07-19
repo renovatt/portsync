@@ -375,7 +375,7 @@ export const deleteSkill = async (
     encryptedSecretKey: string
 ) => {
     try {
-        const response = await fetch(`${BASE_URL}/skills${skillId}`, {
+        const response = await fetch(`${BASE_URL}/skills/${skillId}`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',
