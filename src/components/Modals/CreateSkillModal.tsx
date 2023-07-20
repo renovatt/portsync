@@ -19,7 +19,7 @@ import { useGlobalContext } from '../Providers/ContextProvider';
 import { postSecretkey, postSkill } from '@/services';
 import SecretKeyModal from './SecretKeyModal';
 
-const CreateSkill = ({ closeModal, toggleModal }: ModalFunctionProps) => {
+const CreateSkillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const methods = useForm<SkillSchema>({
         mode: 'all',
         reValidateMode: 'onChange',
@@ -126,4 +126,4 @@ const CreateSkill = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     )
 }
 
-export default CreateSkill;
+export default CreateSkillModal;
