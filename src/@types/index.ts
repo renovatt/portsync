@@ -158,17 +158,20 @@ export type InitialValueProps = {
     projectId: string,
     skillId: string,
     softskillId: string,
-    handleOpenSecretKeyModal: () => void,
-    handleCloseSecretKeyModal: () => void,
-    handleDeleteButton: () => void,
-    handleShowAndHideAside: () => void,
-    handleHideAside: () => void,
-    handleCreateProject: () => void,
-    handleCreateSkill: () => void,
-    handleCreateSoftskill: () => void,
-    closeModal: () => void,
-    toggleModal: () => void
-    handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void,
-    handleCreateModal: (modalType: CreateModalFunctionProps) => void,
-    setSecretKeyLoading: React.Dispatch<React.SetStateAction<boolean>>
+    handleUpdateProjects: () => void;
+    handleUpdateSkills: () => void;
+    handleUpdateSoftskills: () => void;
+    handleOpenSecretKeyModal: () => void;
+    handleCloseSecretKeyModal: () => void;
+    handleDeleteButton: () => void;
+    handleShowAndHideAside: () => void;
+    handleHideAside: () => void;
+    handleCreateProject: () => void;
+    handleCreateSkill: () => void;
+    handleCreateSoftskill: () => void;
+    closeModal: () => void;
+    toggleModal: () => void;
+    handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void;
+    handleCreateModal: (modalType: CreateModalFunctionProps) => void;
+    setSecretKeyLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
