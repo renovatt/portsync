@@ -41,6 +41,8 @@ export default function SecretKeyModal({
                     clearInterval(animationInterval);
                 }
             }, 10);
+        } else {
+            setHashEffect('')
         }
 
         return () => clearInterval(animationInterval);
