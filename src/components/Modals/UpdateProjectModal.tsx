@@ -136,6 +136,8 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
     return (
         <FormProvider {...methods}>
             <Modal
+                src={project.banner_url}
+                alt={project.project_name}
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >

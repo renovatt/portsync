@@ -130,6 +130,7 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
     return (
         <FormProvider {...methods}>
             <Modal
+                svg={skill.svg_link}
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >
