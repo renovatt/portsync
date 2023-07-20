@@ -24,8 +24,6 @@ import { postProject, postSecretkey } from '@/services';
 import SecretKeyModal from '../SecretKeyModal';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
-    const [loading, setLoading] = useState(false)
-
     const methods = useForm<ProjectSchema>({
         mode: 'all',
         reValidateMode: 'onChange',
@@ -33,9 +31,11 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
     });
 
     const {
+        secretKeyLoading,
         secretKeyModal,
+        setSecretKeyLoading,
         handleOpenSecretKeyModal,
-        handleCloseSecretKeyModal
+        handleCloseSecretKeyModal,
     } = useGlobalContext()
 
     const onSubmit = async () => {
@@ -46,20 +46,29 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
         const data = methods.getValues();
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await postProject(data, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal()
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await postProject(data, encryptedSecretKey)
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+            toast.error("Ocorreu um erro ao processar a solicitação.");
+        } finally {
+            setSecretKeyLoading(false)
         }
     };
 
@@ -144,6 +153,7 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
 
             {secretKeyModal && (
                 <SecretKeyModal
+                    loading={secretKeyLoading}
                     closeModal={handleCloseSecretKeyModal}
                     toggleModal={handleCloseSecretKeyModal}
                     handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}

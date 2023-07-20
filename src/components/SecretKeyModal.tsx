@@ -12,6 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SecretKeyModal({
+    loading,
     closeModal,
     toggleModal,
     handleSecretKeyModalSubmit
@@ -32,27 +33,29 @@ export default function SecretKeyModal({
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >
-                <Form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <GridNameInputs>
-                        <Field>
-                            <Input
-                                type='password'
-                                name='secretKey'
-                                label='Código de confirmação'
-                                placeholder='#########################'
-                            />
+                {loading ? <p className="text-white">Verificando código..</p> : (
+                    <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <GridNameInputs>
+                            <Field>
+                                <Input
+                                    type='password'
+                                    name='secretKey'
+                                    label='Código de confirmação'
+                                    placeholder='#########################'
+                                />
 
-                            <ErrorMessage field='secretKey' />
-                        </Field>
-                    </GridNameInputs>
+                                <ErrorMessage field='secretKey' />
+                            </Field>
+                        </GridNameInputs>
 
-                    <Button
-                        type='submit'
-                        title='Confirmar'
-                        width='w-40'
-                        svg={<RiShieldKeyholeFill className='text-white w-6 h-6' />}
-                    />
-                </Form>
+                        <Button
+                            type='submit'
+                            title='Confirmar'
+                            width='w-40'
+                            svg={<RiShieldKeyholeFill className='text-white w-6 h-6' />}
+                        />
+                    </Form>
+                )}
             </Modal>
         </FormProvider>
     )

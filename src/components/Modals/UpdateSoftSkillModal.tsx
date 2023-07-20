@@ -33,10 +33,13 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
     const {
         deleteButton,
         secretKeyModal,
+        secretKeyLoading,
+        setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
         handleDeleteButton
     } = useGlobalContext()
+
 
     const onSubmit = async () => {
         handleOpenSecretKeyModal()
@@ -59,40 +62,58 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         const data = methods.getValues();
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await putSoftskill(id!, data, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal()
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await putSoftskill(id!, data, encryptedSecretKey);
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+
+        } finally {
+            setSecretKeyLoading(false)
         }
     }
 
     const handleDeleteSubmit = async (secretKeyValue: string) => {
         const encryptedSecretKey = await postSecretkey(secretKeyValue);
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await deleteSoftskill(id!, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await deleteSoftskill(id!, encryptedSecretKey);
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+
+        } finally {
+            setSecretKeyLoading(false)
         }
     };
 
@@ -173,6 +194,7 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
             {
                 secretKeyModal && (
                     <SecretKeyModal
+                        loading={secretKeyLoading}
                         closeModal={handleCloseSecretKeyModal}
                         toggleModal={handleCloseSecretKeyModal}
                         handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}

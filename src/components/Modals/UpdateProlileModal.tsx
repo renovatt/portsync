@@ -31,9 +31,12 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
 
     const {
         secretKeyModal,
+        secretKeyLoading,
+        setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
     } = useGlobalContext()
+
 
     const onSubmit = async () => {
         handleOpenSecretKeyModal()
@@ -47,20 +50,29 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         const data = methods.getValues();
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await putProfile(id!, data, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal()
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await putProfile(id!, data, encryptedSecretKey);
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+
+        } finally {
+            setSecretKeyLoading(false)
         }
     }
 
@@ -148,6 +160,7 @@ const UpdateProlileModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
 
             {secretKeyModal && (
                 <SecretKeyModal
+                    loading={secretKeyLoading}
                     closeModal={handleCloseSecretKeyModal}
                     toggleModal={handleCloseSecretKeyModal}
                     handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}

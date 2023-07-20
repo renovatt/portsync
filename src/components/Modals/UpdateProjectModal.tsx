@@ -40,10 +40,13 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
     const {
         deleteButton,
         secretKeyModal,
+        secretKeyLoading,
+        setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
         handleDeleteButton
     } = useGlobalContext()
+
 
     const onSubmit = async () => {
         handleOpenSecretKeyModal()
@@ -66,40 +69,58 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
         const data = methods.getValues();
         const encryptedSecretKey = await postSecretkey(secretKeyValue)
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await putProject(id!, data, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal()
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await putProject(id!, data, encryptedSecretKey);
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+
+        } finally {
+            setSecretKeyLoading(false)
         }
     }
 
     const handleDeleteSubmit = async (secretKeyValue: string) => {
         const encryptedSecretKey = await postSecretkey(secretKeyValue);
 
-        if (typeof encryptedSecretKey === 'string') {
-            const { response, error } = await deleteProject(id!, encryptedSecretKey);
+        setSecretKeyLoading(true)
 
-            if (response) {
-                toast.success(response);
-                closeModal();
-                handleCloseSecretKeyModal();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        try {
+            if (typeof encryptedSecretKey === 'string') {
+                const { response, error } = await deleteProject(id!, encryptedSecretKey);
+
+                if (response) {
+                    toast.success(response);
+                    closeModal();
+                    handleCloseSecretKeyModal()
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    toast.error(error);
+                }
             } else {
+                const error = encryptedSecretKey.error;
                 toast.error(error);
             }
-        } else {
-            const error = encryptedSecretKey.error;
-            toast.error(error);
+            setSecretKeyLoading(false)
+        } catch (error) {
+
+        } finally {
+            setSecretKeyLoading(false)
         }
     };
 
@@ -270,6 +291,7 @@ const UpdateProjectModal = ({ id, closeModal, toggleModal }: ModalFunctionProps)
 
             {secretKeyModal && (
                 <SecretKeyModal
+                    loading={secretKeyLoading}
                     closeModal={handleCloseSecretKeyModal}
                     toggleModal={handleCloseSecretKeyModal}
                     handleSecretKeyModalSubmit={handleSecretKeyModalSubmit}

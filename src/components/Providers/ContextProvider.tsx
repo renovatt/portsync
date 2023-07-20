@@ -16,6 +16,7 @@ import {
 
 const initialValue: InitialValueProps = {
     secretKeyModal: false,
+    secretKeyLoading: false,
     deleteButton: false,
     modal: false,
     loading: false,
@@ -44,7 +45,8 @@ const initialValue: InitialValueProps = {
     toggleModal: () => { },
     handleOpenSecretKeyModal: () => { },
     handleCloseSecretKeyModal: () => { },
-    handleDeleteButton: () => { }
+    handleDeleteButton: () => { },
+    setSecretKeyLoading: () => { }
 }
 
 const GlobalContext = createContext(initialValue);
@@ -55,6 +57,7 @@ export function useGlobalContext() {
 
 export function ContextProvider({ children }: Children) {
     const [deleteButton, setDeleteButton] = useState(false)
+    const [secretKeyLoading, setSecretKeyLoading] = useState(false);
     const [secretKeyModal, setSecretKeyModal] = useState(false);
     const [aside, setAside] = useState(false);
     const [isMobileButtonActive, setIsMobileButtonActive] = useState(false);
@@ -167,6 +170,7 @@ export function ContextProvider({ children }: Children) {
 
     const contextValue: InitialValueProps = {
         secretKeyModal,
+        secretKeyLoading,
         deleteButton,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
@@ -196,6 +200,7 @@ export function ContextProvider({ children }: Children) {
         handleCreateModal,
         closeModal,
         toggleModal,
+        setSecretKeyLoading
     };
 
     return (
