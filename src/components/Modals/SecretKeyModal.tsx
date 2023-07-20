@@ -1,3 +1,4 @@
+import React from 'react'
 import { SecretKeySchema, SecretKeyModalProps } from "@/@types";
 import Modal from "../Modal";
 import Input from "../Input";
@@ -23,6 +24,28 @@ export default function SecretKeyModal({
         resolver: zodResolver(secretKeySchema)
     });
 
+    const [hashEffect, setHashEffect] = React.useState('');
+
+    React.useEffect(() => {
+        let animationInterval: NodeJS.Timeout;
+        if (loading) {
+            let index = 0;
+            const randomHash = Array.from(crypto.getRandomValues(new Uint8Array(300)))
+                .map((byte) => byte.toString(16).padStart(2, '0'))
+                .join('');
+
+            animationInterval = setInterval(() => {
+                setHashEffect((prevText) => prevText + randomHash.charAt(index));
+                index++;
+                if (index >= randomHash.length) {
+                    clearInterval(animationInterval);
+                }
+            }, 10);
+        }
+
+        return () => clearInterval(animationInterval);
+    }, [loading]);
+
     const onSubmit = async ({ secretKey }: SecretKeySchema) => {
         handleSecretKeyModalSubmit(secretKey);
     };
@@ -33,7 +56,13 @@ export default function SecretKeyModal({
                 closeModal={closeModal}
                 toggleModal={toggleModal}
             >
-                {loading ? <p className="text-white">Verificando código..</p> : (
+                {loading ? (
+                    <span className=' md:w-[95%] w-[85%] overflow-hidden whitespace-nowrap'>
+                        <p className="text-textPrimary inline-block">
+                            {hashEffect}
+                        </p>
+                    </span>
+                ) : (
                     <Form onSubmit={methods.handleSubmit(onSubmit)}>
                         <GridNameInputs>
                             <Field>
