@@ -44,11 +44,20 @@ module.exports = {
             right: '0',
             left: 'unset'
           }
+        },
+        scrollLeft: {
+          '0%': {
+            transform: 'translateX(0)'
+          },
+          '100%': {
+            transform: 'translateX(-100%)'
+          }
         }
       },
       animation: {
         fade: 'fade .3s forwards',
         load: 'load .5s ease-in-out infinite',
+        scrollLeft: 'scrollLeft 5s linear infinite',
       }
     },
   },
