@@ -87,7 +87,7 @@ const Dashboard = () => {
             )}
 
             <section
-                className='flex flex-col justify-center items-center min-h-screen w-screen max-w-[1200px] lg:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
+                className='flex flex-col justify-center items-center min-h-[70vh] w-screen max-w-[1200px] lg:max-h-[800px] p-2 md:m-0 mb-8 bg-backgroundPrimary overflow-hidden'
             >
                 <article className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full ${aside ? 'mt-48' : 'm-0'} transition-all`}>
                     <Table headers={['Projetos']}>
