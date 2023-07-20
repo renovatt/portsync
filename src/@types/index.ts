@@ -62,6 +62,9 @@ export type ModalProps = {
     children: React.ReactNode;
     closeModal: () => void;
     toggleModal: () => void;
+    src?: string;
+    alt?: string;
+    svg?: string;
 }
 
 export type ModalFunctionProps = {
@@ -105,6 +108,11 @@ export type ListProps = {
 
 export type EncryptedSecretKeyProps = {
     encryptedSecretKey: string;
+}
+
+export type ImageProps = {
+    src: string;
+    alt: string;
 }
 
 export type CreateModalFunctionProps = 'newProject' | 'newSkill' | 'newSoftskill';
