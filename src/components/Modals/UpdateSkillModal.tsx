@@ -17,7 +17,7 @@ import Form from '../Form';
 import Modal from '../Modal';
 import { GridLinksInputs, GridTextAreaInput } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 import Error from '../Helper/Error';
 
 const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
@@ -38,7 +38,8 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
         setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
-        handleDeleteButton
+        handleDeleteButton,
+        handleUpdateSkills
     } = useGlobalContext()
 
 
@@ -72,7 +73,8 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSkills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);
@@ -101,7 +103,8 @@ const UpdateSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) =
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSkills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);

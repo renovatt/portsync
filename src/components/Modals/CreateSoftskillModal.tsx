@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { GridNameInputs } from '../GridInputs';
 import { useGlobalContext } from '@/components/Providers/ContextProvider';
 import { postSecretkey, postSoftskill } from '@/services';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 
 const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const methods = useForm<SoftskillSchema>({
@@ -27,7 +27,8 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
         secretKeyModal,
         setSecretKeyLoading,
         handleOpenSecretKeyModal,
-        handleCloseSecretKeyModal
+        handleCloseSecretKeyModal,
+        handleUpdateSoftskills
     } = useGlobalContext()
 
     const onSubmit = async () => {
@@ -47,7 +48,8 @@ const CreateSoftskillModal = ({ closeModal, toggleModal }: ModalFunctionProps) =
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSoftskills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);

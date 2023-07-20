@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
 import Form from '../Form';
 import Modal from '../Modal';
 import { GridTextAreaInput } from '../GridInputs';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 import { useGlobalContext } from '../Providers/ContextProvider';
 import Error from '../Helper/Error';
 

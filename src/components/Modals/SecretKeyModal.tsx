@@ -1,11 +1,11 @@
 import { SecretKeySchema, SecretKeyModalProps } from "@/@types";
-import Modal from "./Modal";
-import Input from "./Input";
-import { ErrorMessage } from "./ErrorMessage";
-import { Field } from "./Field";
-import { GridNameInputs } from "./GridInputs";
-import Form from "./Form";
-import Button from "./Button";
+import Modal from "../Modal";
+import Input from "../Input";
+import { ErrorMessage } from "../ErrorMessage";
+import { Field } from "../Field";
+import { GridNameInputs } from "../GridInputs";
+import Form from "../Form";
+import Button from "../Button";
 import { RiShieldKeyholeFill } from "react-icons/ri";
 import { secretKeySchema } from "@/zod";
 import { FormProvider, useForm } from "react-hook-form";

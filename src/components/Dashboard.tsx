@@ -9,8 +9,8 @@ import UpdateSkillModal from './Modals/UpdateSkillModal'
 import UpdateProlileModal from './Modals/UpdateProlileModal'
 import UpdateSoftSkillModal from './Modals/UpdateSoftSkillModal'
 import CreateProjectModal from './Modals/CreateProjectModal'
-import CreateSKillModal from './Modals/CreateSKillModal'
 import CreateSoftskillModal from './Modals/CreateSoftskillModal'
+import CreateSkillModal from './Modals/CreateSkillModal'
 
 const Dashboard = () => {
     const {
@@ -41,7 +41,7 @@ const Dashboard = () => {
             )}
 
             {modal && isNewSkill && (
-                <CreateSKillModal
+                <CreateSkillModal
                     closeModal={closeModal}
                     toggleModal={toggleModal}
                 />

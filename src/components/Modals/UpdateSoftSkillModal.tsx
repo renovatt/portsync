@@ -16,7 +16,7 @@ import Form from '../Form';
 import Modal from '../Modal';
 import { GridNameInputs } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 import Error from '../Helper/Error';
 
 const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProps) => {
@@ -37,7 +37,8 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
         setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
-        handleDeleteButton
+        handleDeleteButton,
+        handleUpdateSoftskills
     } = useGlobalContext()
 
 
@@ -71,7 +72,8 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSoftskills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);
@@ -100,7 +102,8 @@ const UpdateSoftSkillModal = ({ id, closeModal, toggleModal }: ModalFunctionProp
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSoftskills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Input from '../Input';
 import TextArea from '../TextArea';
 import Button from '../Button';
@@ -18,9 +17,9 @@ import {
 } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
 import { postSecretkey, postSkill } from '@/services';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 
-const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
+const CreateSkillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const methods = useForm<SkillSchema>({
         mode: 'all',
         reValidateMode: 'onChange',
@@ -32,7 +31,8 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
         secretKeyModal,
         setSecretKeyLoading,
         handleOpenSecretKeyModal,
-        handleCloseSecretKeyModal
+        handleCloseSecretKeyModal,
+        handleUpdateSkills
     } = useGlobalContext()
 
     const onSubmit = async () => {
@@ -52,7 +52,8 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateSkills();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);
@@ -125,4 +126,4 @@ const CreateSKillModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     )
 }
 
-export default CreateSKillModal;
+export default CreateSkillModal;

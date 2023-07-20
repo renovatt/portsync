@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { projectSchema } from '@/zod';
 import { ModalFunctionProps, ProjectSchema } from '@/@types';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -21,7 +20,7 @@ import {
 } from '../GridInputs';
 import { useGlobalContext } from '../Providers/ContextProvider';
 import { postProject, postSecretkey } from '@/services';
-import SecretKeyModal from '../SecretKeyModal';
+import SecretKeyModal from './SecretKeyModal';
 
 const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => {
     const methods = useForm<ProjectSchema>({
@@ -36,6 +35,7 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
         setSecretKeyLoading,
         handleOpenSecretKeyModal,
         handleCloseSecretKeyModal,
+        handleUpdateProjects
     } = useGlobalContext()
 
     const onSubmit = async () => {
@@ -55,7 +55,8 @@ const CreateProjectModal = ({ closeModal, toggleModal }: ModalFunctionProps) => 
                 if (response) {
                     toast.success(response);
                     closeModal();
-                    handleCloseSecretKeyModal()
+                    handleCloseSecretKeyModal();
+                    handleUpdateProjects();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     toast.error(error);
