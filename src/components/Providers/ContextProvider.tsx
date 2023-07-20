@@ -34,6 +34,9 @@ const initialValue: InitialValueProps = {
     projectId: '',
     skillId: '',
     softskillId: '',
+    handleUpdateProjects: () => { },
+    handleUpdateSkills: () => { },
+    handleUpdateSoftskills: () => { },
     handleShowAndHideAside: () => { },
     handleHideAside: () => { },
     handleCreateProject: () => { },
@@ -82,8 +85,23 @@ export function ContextProvider({ children }: Children) {
         skills,
         softskills,
         error,
-        loading
+        loading,
+        fetchProjects,
+        fetchSkills,
+        fetchSoftskills,
     } = useAPI();
+
+    const handleUpdateProjects = async () => {
+        fetchProjects()
+    }
+
+    const handleUpdateSkills = async () => {
+        fetchSkills()
+    }
+
+    const handleUpdateSoftskills = async () => {
+        fetchSoftskills()
+    }
 
     const handleDeleteButton = () => {
         setDeleteButton(true)
@@ -191,6 +209,9 @@ export function ContextProvider({ children }: Children) {
         skillId,
         softskillId,
         modal,
+        handleUpdateProjects,
+        handleUpdateSkills,
+        handleUpdateSoftskills,
         handleShowAndHideAside,
         handleHideAside,
         handleCreateProject,
