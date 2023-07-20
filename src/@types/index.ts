@@ -75,6 +75,7 @@ export type ModalFunctionProps = {
 
 export interface SecretKeyModalProps extends ModalFunctionProps {
     handleSecretKeyModalSubmit: (secretKey: string) => void;
+    loading: boolean;
 }
 
 export type ButtonProps = {
@@ -146,6 +147,7 @@ export type InitialValueProps = {
     error: boolean | string;
     modal: boolean;
     aside: boolean;
+    secretKeyLoading: boolean;
     secretKeyModal: boolean;
     deleteButton: boolean;
     isMobileButtonActive: boolean;
@@ -168,4 +170,5 @@ export type InitialValueProps = {
     toggleModal: () => void
     handleOpenModal: (id: string, modalType: UpdateModalFunctionProps) => void,
     handleCreateModal: (modalType: CreateModalFunctionProps) => void,
+    setSecretKeyLoading: React.Dispatch<React.SetStateAction<boolean>>
 };
