@@ -147,7 +147,10 @@ const useAPI = () => {
         profile,
         skills,
         softskills,
-        projects
+        projects,
+        fetchSoftskills,
+        fetchSkills,
+        fetchProjects
     };
 };
 
