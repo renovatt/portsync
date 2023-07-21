@@ -134,11 +134,28 @@ const useAPI = () => {
         }
     };
 
+    const fetchDataAndAwaitAll = async () => {
+        try {
+            setLoading(true);
+            setError(false);
+
+            await Promise.all(
+                [
+                    fetchProjects(),
+                    fetchSkills(),
+                    fetchSoftskills()
+                ]
+            )
+        } catch (error) {
+            setError('Erro ao obter os dados.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchProfile();
-        fetchProjects();
-        fetchSkills();
-        fetchSoftskills();
+        fetchDataAndAwaitAll();
     }, []);
 
     return {
