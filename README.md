@@ -6,9 +6,11 @@
 
 ## Descrição
 
-### Apresento o [PortSync](https://portsync.vercel.app) - um sistema completo que desenvolvi para gerenciar meu próprio portfólio. Após refatorar meu portfólio para o [Next.js](https://nextjs.org), criei uma [API](https://github.com/renovatt/portfolio-api.git) para consumir os dados e, finalmente, desenvolvi o PortSync exclusivamente para gerenciar meu portfólio. O PortSync oferece todas as operações CRUD, permitindo que eu envie novos projetos, habilidades e competências, atualize informações e até mesmo exclua registros. Embora todos possam acessar as informações, apenas eu tenho permissão para criar e alterar dados. Para garantir a segurança, utilizei a criptografia nativa do Node.js ([crypto](https://nodejs.org/api/crypto.html)) para criar uma barreira de proteção. Isso requer um código de segurança, que a minha [API](https://github.com/renovatt/portfolio-api.git) lê e compara com o armazenado no banco de dados. Além disso, estou utilizando o bcrypto para armazenar com segurança o meu código de segurança. 
+### 🚀 Apresento o [PortSync](https://portsync.vercel.app) - um sistema completo que desenvolvi para gerenciar meu portfólio! Depois de refatorar meu portfólio para o [Next.js](https://nextjs.org), criei uma [API](https://github.com/renovatt/portfolio-api.git) para consumir os dados e, finalmente, desenvolvi o PortSync exclusivamente para esse propósito.
 
-### Estou extremamente feliz com este projeto! É realmente gratificante ter meu próprio sistema de gerenciamento como parte do meu portfólio. O PortSync possui uma interface simples e intuitiva, com destaque para a utilização de modais, o que o torna visualmente atraente. Além disso, as cores utilizadas são semelhantes às do [WillCode](https://portfolio-renovatt.vercel.app), proporcionando uma harmonia estética.
+### Com ele, posso realizar todas as operações CRUD, enviando novos projetos, habilidades e competências, atualizando informações e até mesmo excluindo registros. Para garantir a segurança, utilizei a criptografia nativa do Node.js ([crypto](https://nodejs.org/api/crypto.html)) para criar uma barreira de proteção, exigindo um código de segurança para acessar e alterar dados, proporcionando total controle sobre as informações.
+
+### Estou orgulhoso dessa conquista e feliz por ter meu próprio sistema de gerenciamento integrado ao meu portfólio. O PortSync possui uma interface simples e intuitiva, com destaque para o uso de modais que o torna visualmente atraente, e as cores harmonizam perfeitamente com o estilo do [WillCode](https://portfolio-renovatt.vercel.app).
 
 [Ver Projeto](https://portsync.vercel.app)
 
@@ -78,7 +80,7 @@ Iniciando o projeto
 - Dando uma estrela no projeto
 - Criar uma conexão comigo no linkedin fazendo parte da minha networking e curtir o meu projeto.
 
-<br>
+<!-- <br> -->
 
 **Autor**
 [Wildemberg Renovato de Lima](https://www.linkedin.com/in/renovatt/)
